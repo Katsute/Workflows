@@ -1,0 +1,82 @@
+name: Maven Deploy
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        type: string
+        default: ubuntu-latest
+        required: false
+        description: The operating system
+      timeout:
+        type: number
+        default: 60
+        required: false
+        description: Job timeout in minutes
+      java-version:
+        type: number
+        default: 11
+        required: false
+        description: The Java version to use
+      environment:
+        type: string
+        required: false
+        description: GitHub environment
+    secrets:
+      token:
+        required: true
+      maven-username:
+        required: true
+      maven-password:
+        required: true
+      gpg-private-key:
+        required: true
+      gpg-passphrase:
+        required: true
+
+jobs:
+  deploy:
+    name: Deploy (Java ${{ inputs.java-version }})
+    runs-on: ${{ inputs.os }}
+    timeout-minutes: ${{ inputs.timeout }}
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: 📤 Checkout Repository
+        uses: actions/checkout@v2.3.4
+
+      - name: ☕ Install Java
+        uses: actions/setup-java@v2.3.1
+        with:
+          architecture: x64
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
+
+      - name: 🚀 Deploy to GitHub Packages
+        run: mvn deploy -DskipTests --no-transfer-progress -P github
+        env:
+          token: ${{ secrets.token }}
+
+      - name: 🚀 Deploy to GitHub Releases
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: 'target/*.jar'
+          repo-token: ${{ secrets.token }}
+
+      - name: 📚 Setup Apache Maven Central
+        uses: actions/setup-java@v2.3.1
+        with:
+          architecture: x64
+          distribution: temurin
+          java-version: 11
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_CENTRAL_TOKEN
+          gpg-private-key: ${{ secrets.gpg-private-key }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: 🚀 Deploy to Maven Central
+        run: mvn deploy -DskipTests --no-transfer-progress -P ossrh
+        env:
+          MAVEN_USERNAME: ${{ secrets.maven-username }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.maven-password }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.gpg-passphrase }}

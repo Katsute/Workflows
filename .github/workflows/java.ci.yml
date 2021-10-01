@@ -1,0 +1,149 @@
+name: Java CI
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        type: string
+        default: ubuntu-latest
+        required: false
+        description: The operating system
+      timeout:
+        type: number
+        default: 30
+        required: false
+        description: Job timeout in minutes
+      java-version:
+        type: string
+        default: '[8, 11, 17]'
+        required: false
+        description: The Java version to use
+      compile-args:
+        type: string
+        required: false
+        description: Arguments for `mvn compile`
+      package:
+        type: boolean
+        default: true
+        required: false
+        description: Run `mvn package`
+      package-args:
+        type: string
+        required: false
+        description: Arguments for `mvn package`
+      codeql:
+        type: boolean
+        default: true
+        required: false
+        description: Run CodeQL analysis
+      codeql-java-version:
+        type: number
+        default: 17
+        required: false
+        description: The Java version to use on CodeQL
+      test:
+        type: boolean
+        default: true
+        description: Run `mvn test`
+
+jobs:
+  Compile:
+    name: Compile (Java ${{ matrix.java }})
+    runs-on: ${{ inputs.os }}
+    timeout-minutes: ${{ inputs.timeout }}
+    strategy:
+      matrix:
+        java: ${{ fromJSON(inputs.java-version) }}
+      fail-fast: false
+    steps:
+      - name: 📤 Checkout Repository
+        uses: actions/checkout@v2.3.4
+
+      - name: ☕ Install Java
+        uses: actions/setup-java@v2.3.1
+        with:
+          architecture: x64
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven
+
+      - name: ✔ Compile with Maven
+        run: mvn compile -DskipTests --no-transfer-progress ${{ inputs.compile-args }}
+
+  Package:
+    name: Package (Java ${{ matrix.java }})
+    runs-on: ${{ inputs.os }}
+    timeout-minutes: ${{ inputs.timeout }}
+    if: inputs.package
+    strategy:
+      matrix:
+        java: ${{ fromJSON(inputs.java-version) }}
+      fail-fast: false
+    steps:
+      - name: 📤 Checkout Repository
+        uses: actions/checkout@v2.3.4
+
+      - name: ☕ Install Java
+        uses: actions/setup-java@v2.3.1
+        with:
+          architecture: x64
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven
+
+      - name: ✔ Package with Maven
+        run: mvn package -DskipTests --no-transfer-progress ${{ inputs.package-args }}
+
+  CodeQL:
+    name: CodeQL (Java ${{ inputs.codeql-java-version}})
+    runs-on: ${{ inputs.os }}
+    timeout-minutes: ${{ inputs.timeout }}
+    needs: [Compile, Package]
+    if: inputs.codeql && (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]')
+    steps:
+      - name: 📤 Checkout Repository
+        uses: actions/checkout@v2.3.4
+
+      - name: 📚 Install CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: java
+
+      - name: ☕ Install Java
+        uses: actions/setup-java@v2.3.1
+        with:
+          architecture: x64
+          distribution: temurin
+          java-version: ${{ inputs.codeql-java-version }}
+          cache: maven
+
+      - name: ✔ Compile with Maven
+        run: mvn compile -DskipTests --no-transfer-progress ${{ inputs.compile-args }}
+
+      - name: ✔ Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
+  Test:
+    name: Test (Java ${{ matrix.java }})
+    runs-on: ${{ inputs.os }}
+    timeout-minutes: ${{ inputs.timeout }}
+    needs: CodeQL
+    if: inputs.test
+    strategy:
+      matrix:
+        java: ${{ fromJSON(inputs.java-version) }}
+      fail-fast: false
+    steps:
+      - name: 📤 Checkout Repository
+        uses: actions/checkout@v2.3.4
+
+      - name: ☕ Install Java
+        uses: actions/setup-java@v2.3.1
+        with:
+          architecture: x64
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+          cache: maven
+
+      - name: ✔ Test with Maven
+        run: mvn test -fae --no-transfer-progress ${{ inputs.test-args }}
