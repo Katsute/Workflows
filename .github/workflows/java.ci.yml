@@ -99,7 +99,11 @@ jobs:
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: [Compile, Package]
-    if: inputs.codeql && (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]')
+    if: |
+      always() && inputs.codeql &&
+      (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
+      (needs.Package.result == 'success' ||
+       needs.Package.result == 'skipped')
     steps:
       - name: 📤 Checkout Repository
         uses: actions/checkout@v2.3.4
