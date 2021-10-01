@@ -125,8 +125,8 @@ jobs:
     needs: CodeQL
     if: |
       always() && inputs.test &&
-      (needs.CodeQL.result == "success" ||
-       needs.CodeQL.result == "skipped")
+      (needs.CodeQL.result == 'success' ||
+       needs.CodeQL.result == 'skipped')
     strategy:
       matrix:
         node: ${{ fromJSON(format('[{0}]', inputs.node-version)) }}
