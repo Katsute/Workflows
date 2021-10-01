@@ -128,7 +128,10 @@ jobs:
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: CodeQL
-    if: always() && success() && inputs.test
+    if: |
+      always() && inputs.test &&
+      (needs.CodeQL.result == "success" ||
+       needs.CodeQL.result == "skipped")
     strategy:
       matrix:
         java: ${{ fromJSON(format('[{0}]', inputs.java-version)) }}
