@@ -24,7 +24,7 @@ on:
         description: Arguments for `mvn compile`
       package:
         type: boolean
-        default: true
+        default: false
         required: false
         description: Run `mvn package`
       package-args:
