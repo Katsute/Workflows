@@ -53,7 +53,7 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     strategy:
       matrix:
-        java: ${{ fromJSON('[' + inputs.java-version + ']') }}
+        java: ${{ fromJSON(format('[{0}]', inputs.java-version)) }}
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
@@ -77,7 +77,7 @@ jobs:
     if: inputs.package
     strategy:
       matrix:
-        java: ${{ fromJSON('[' + inputs.java-version + ']') }}
+        java: ${{ fromJSON(format('[{0}]', inputs.java-version)) }}
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
@@ -131,7 +131,7 @@ jobs:
     if: inputs.test
     strategy:
       matrix:
-        java: ${{ fromJSON('[' + inputs.java-version + ']') }}
+        java: ${{ fromJSON(format('[{0}]', inputs.java-version)) }}
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
