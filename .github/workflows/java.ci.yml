@@ -15,7 +15,7 @@ on:
         description: Job timeout in minutes
       java-version:
         type: string
-        default: '[8, 11, 17]'
+        default: 8, 11, 17
         required: false
         description: The Java version to use
       compile-args:

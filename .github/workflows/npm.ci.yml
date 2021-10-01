@@ -15,7 +15,7 @@ on:
         description: Job timeout in minutes
       node-version:
         type: string
-        default: '[14]'
+        default: 14
         required: false
         description: The NodeJS version to use
       rebuild:

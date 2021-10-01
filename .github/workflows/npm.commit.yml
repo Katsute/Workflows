@@ -26,6 +26,16 @@ on:
         type: string
         required: true
         description: The file or list of files to commit
+      git-name:
+        type: string
+        required: false
+        default: github-actions[bot]
+        description: The username to commit with
+      git-email:
+        type: string
+        required: false
+        default: github-actions[bot]@users.noreply.github.com
+        description: The email to commit with
       commit-message:
         type: string
         required: false
@@ -58,8 +68,8 @@ jobs:
 
       - name: 📥 Commit Changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f "${{ join(fromJSON(inputs.files), '"\ngit add -f "') }}"
+          git config --global user.name "${{ inputs.git-name }}"
+          git config --global user.email "${{ inputs.git-email }}"
+          git add -f "${{ join(fromJSON(format('[{0}]', inputs.files)), '"\ngit add -f "') }}"
           git diff-index --quiet HEAD || git commit -m "${{ inputs.commit-message }}"
           git push
