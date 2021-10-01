@@ -44,7 +44,7 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     strategy:
       matrix:
-        node: ${{ fromJSON(inputs.node-version) }}
+        node: ${{ fromJSON('[' + inputs.node-version + ']') }}
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
@@ -68,7 +68,7 @@ jobs:
     if: inputs.rebuild
     strategy:
       matrix:
-        node: ${{ fromJSON(inputs.node-version) }}
+        node: ${{ fromJSON('[' + inputs.node-version + ']') }}
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
@@ -126,7 +126,7 @@ jobs:
     if: inputs.test
     strategy:
       matrix:
-        node: ${{ fromJSON(inputs.node-version) }}
+        node: ${{ fromJSON('[' + inputs.node-version + ']') }}
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
