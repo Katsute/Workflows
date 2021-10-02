@@ -1,5 +1,4 @@
-name: Maven Deploy
-
+name: Java Package Commit
 on:
   workflow_call:
     inputs:
@@ -15,7 +14,7 @@ on:
         description: Job timeout in minutes
       java-version:
         type: number
-        default: 11
+        default: 17
         required: false
         description: The Java version to use
       package-args:

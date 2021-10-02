@@ -1,4 +1,4 @@
-name: Maven Deploy
+name: Java Package Artifact
 
 on:
   workflow_call:
@@ -15,7 +15,7 @@ on:
         description: Job timeout in minutes
       java-version:
         type: number
-        default: 11
+        default: 17
         required: false
         description: The Java version to use
       package-args:
