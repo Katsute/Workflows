@@ -1,0 +1,72 @@
+name: Java Exec
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        type: string
+        default: ubuntu-latest
+        required: false
+        description: The operating system
+      timeout:
+        type: number
+        default: 60
+        required: false
+        description: Job timeout in minutes
+      java-version:
+        type: string
+        default: 8, 11, 17
+        required: false
+        description: The Java version to use
+      compile-args:
+        type: string
+        required: false
+        description: Arguments for `mvn compile`
+      exec-args:
+        type: string
+        required: false
+        description: Arguments for `mvn exec`
+      artifact:
+        type: boolean
+        default: false
+        required: false
+        description: Create an artifact
+      artifact-name:
+        type: string
+        required: false
+        description: Artifact name
+      artifact-path:
+        type: string
+        required: false
+        description: Artifact path
+
+jobs:
+  Exec:
+    name: Exec (Java ${{ inputs.java-version }})
+    runs-on: ${{ inputs.os }}
+    timeout-minutes: ${{ inputs.timeout }}
+    steps:
+      - name: 📤 Checkout Repository
+        uses: actions/checkout@v2.3.4
+
+      - name: ☕ Install Java
+        uses: actions/setup-java@v2.3.1
+        with:
+          architecture: x64
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
+          cache: maven
+
+      - name: ✔ Compile with Maven
+        run: mvn compile -DskipTests --no-transfer-progress ${{ inputs.compile-args }}
+
+      - name: ✔ Exec with Maven
+        run: mvn exec:java -DskipTests --no-transfer-progress ${{ inputs.exec-args }}
+
+      - name: 🚀 Upload Artifacts
+        uses: actions/upload-artifact@v2
+        if: inputs.artifact
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
+          retention-days: 1

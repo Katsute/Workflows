@@ -1,4 +1,4 @@
-name: npm Commit
+name: Maven Deploy
 
 on:
   workflow_call:
@@ -10,14 +10,18 @@ on:
         description: The operating system
       timeout:
         type: number
-        default: 30
+        default: 60
         required: false
         description: Job timeout in minutes
-      node-version:
-        type: string
-        default: 14
+      java-version:
+        type: number
+        default: 11
         required: false
-        description: The NodeJS version to use
+        description: The Java version to use
+      package-args:
+        type: string
+        required: false
+        description: Arguments for `mvn package`
       command:
         type: string
         required: false
@@ -43,24 +47,24 @@ on:
         description: Commit message
 
 jobs:
-  Commit:
-    name: '`${{ inputs.command }}` (${{ inputs.os }} / Node ${{ inputs.node-version }})'
+  deploy:
+    name: Deploy (Java ${{ inputs.java-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
+    environment: ${{ inputs.environment }}
     steps:
       - name: 📤 Checkout Repository
         uses: actions/checkout@v2.3.4
 
-      - name: 📚 Install npm
-        uses: actions/setup-node@v2.4.1
+      - name: ☕ Install Java
+        uses: actions/setup-java@v2.3.1
         with:
-          node-version: ${{ inputs.node-version }}
           architecture: x64
-          cache: npm
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
 
-      - name: ✔ Compile with npm
-        run: |
-          npm ci
+      - name: ✔ Package with Maven
+        run: mvn package -DskipTests --no-transfer-progress ${{ inputs.package-args }}
 
       - name: ✔ Run Command
         if: inputs.command

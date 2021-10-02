@@ -24,7 +24,7 @@ on:
 
 jobs:
   Deploy:
-    name: Deploy (NodeJS ${{ inputs.node-version }})
+    name: Deploy (Node ${{ inputs.node-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     steps:

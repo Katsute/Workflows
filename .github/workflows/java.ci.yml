@@ -102,8 +102,8 @@ jobs:
     if: |
       always() && inputs.codeql &&
       (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
-      (needs.Package.result == 'success' ||
-       needs.Package.result == 'skipped')
+      (needs.Compile.result == 'success') &&
+      (needs.Package.result == 'success' || needs.Package.result == 'skipped')
     steps:
       - name: 📤 Checkout Repository
         uses: actions/checkout@v2.3.4
@@ -134,8 +134,9 @@ jobs:
     needs: CodeQL
     if: |
       always() && inputs.test &&
-      (needs.CodeQL.result == 'success' ||
-       needs.CodeQL.result == 'skipped')
+      (needs.Compile.result == 'success') &&
+      (needs.Package.result == 'success' || needs.Package.result == 'skipped') &&
+      (needs.CodeQL.result == 'success' || needs.CodeQL.result == 'skipped')
     strategy:
       matrix:
         java: ${{ fromJSON(format('[{0}]', inputs.java-version)) }}

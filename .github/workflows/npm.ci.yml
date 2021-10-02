@@ -39,7 +39,7 @@ on:
 
 jobs:
   Compile:
-    name: npm CI (NodeJS ${{ matrix.node }})
+    name: npm CI (Node ${{ matrix.node }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     strategy:
@@ -62,9 +62,10 @@ jobs:
           npm ci
 
   Rebuild:
-    name: npm CI (NodeJS ${{ matrix.node }})
+    name: npm rebuild (Node ${{ matrix.node }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
+    needs: [Compile]
     if: inputs.rebuild
     strategy:
       matrix:
@@ -90,11 +91,15 @@ jobs:
           npm run rebuild
 
   CodeQL:
-    name: CodeQL (NodeJS ${{ matrix.node }})
+    name: CodeQL (Node ${{ matrix.node }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: [Compile, Rebuild]
-    if: inputs.codeql && (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]')
+    if: |
+      always() && inputs.codeql && 
+      (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
+      (needs.Compile.result == 'success') &&
+      (needs.Rebuild.result == 'success' || needs.Rebuild.result == 'skipped')
     steps:
       - name: 📤 Checkout Repository
         uses: actions/checkout@v2.3.4
@@ -119,14 +124,15 @@ jobs:
         uses: github/codeql-action/analyze@v1
 
   Test:
-    name: npm Test (NodeJS ${{ matrix.node }})
+    name: npm test (Node ${{ matrix.node }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: CodeQL
     if: |
       always() && inputs.test &&
-      (needs.CodeQL.result == 'success' ||
-       needs.CodeQL.result == 'skipped')
+      (needs.Compile.result == 'success') &&
+      (needs.Rebuild.result == 'success' || needs.Rebuild.result == 'skipped') &&
+      (needs.CodeQL.result == 'success' || needs.CodeQL.result == 'skipped')
     strategy:
       matrix:
         node: ${{ fromJSON(format('[{0}]', inputs.node-version)) }}
