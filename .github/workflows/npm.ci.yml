@@ -91,7 +91,7 @@ jobs:
           npm run rebuild
 
   CodeQL:
-    name: CodeQL (Node ${{ matrix.node }})
+    name: CodeQL (Node ${{ codeql-node-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: [Compile, Rebuild]
@@ -124,7 +124,7 @@ jobs:
         uses: github/codeql-action/analyze@v1
 
   Test:
-    name: npm test (Node ${{ matrix.node }})
+    name: npm test (Node ${{ matrix.node-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: CodeQL
