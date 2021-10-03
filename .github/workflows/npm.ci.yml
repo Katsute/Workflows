@@ -91,7 +91,7 @@ jobs:
           npm run rebuild
 
   CodeQL:
-    name: CodeQL (Node ${{ codeql-node-version }})
+    name: CodeQL (Node ${{ inputs.codeql-node-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: [Compile, Rebuild]
