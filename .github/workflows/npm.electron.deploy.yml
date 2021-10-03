@@ -14,7 +14,7 @@ on:
         required: false
         description: Job timeout in minutes
       node-version:
-        type: string
+        type: number
         default: 14
         required: false
         description: The NodeJS version to use

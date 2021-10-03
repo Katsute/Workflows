@@ -45,6 +45,10 @@ on:
         type: boolean
         default: true
         description: Run `mvn test`
+      test-args:
+        type: string
+        required: false
+        description: Arguments for `mvn test`
 
 jobs:
   Compile:

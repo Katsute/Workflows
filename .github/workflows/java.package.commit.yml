@@ -74,6 +74,6 @@ jobs:
         run: |
           git config --global user.name "${{ inputs.git-name }}"
           git config --global user.email "${{ inputs.git-email }}"
-          git add -f "${{ join(fromJSON(format('[{0}]', inputs.commit-files)), '"\ngit add -f "') }}"
+          git add "${{ join(fromJSON(format('[{0}]', inputs.commit-files)), '" "') }}"
           git diff-index --quiet HEAD || git commit -m "${{ inputs.commit-message }}"
           git push
