@@ -1,4 +1,4 @@
-name: npm Commit
+name: Deploy
 
 on:
   workflow_call:
@@ -18,6 +18,15 @@ on:
         default: 14
         required: false
         description: The NodeJS version to use
+      rebuild:
+        type: boolean
+        default: true
+        required: false
+        description: Run `npm run rebuild`
+      environment:
+        type: string
+        required: false
+        description: GitHub environment
     secrets:
       token:
         required: true
@@ -27,6 +36,7 @@ jobs:
     name: Deploy (Node ${{ inputs.node-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
+    environment: ${{ inputs.environment }}
     steps:
       - name: 📤 Checkout Repository
         uses: actions/checkout@v2.3.4
@@ -43,6 +53,7 @@ jobs:
           npm ci
 
       - name: 🔄 Rebuild with Electron
+        if: inputs.rebuild
         run: |
           npm run rebuild
 
