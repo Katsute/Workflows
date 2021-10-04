@@ -86,7 +86,8 @@ jobs:
         run: |
           npm ci
 
-      - name: 🔄 Rebuild with Electron
+      - name: 🔄 Rebuild
+        if: inputs.rebuild
         run: |
           npm run rebuild
 
@@ -120,6 +121,11 @@ jobs:
         run:
           npm ci
 
+      - name: 🔄 Rebuild
+        if: inputs.rebuild
+        run: |
+          npm run rebuild
+
       - name: ✔ Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
 
@@ -151,6 +157,11 @@ jobs:
       - name: ✔ Compile with npm
         run: |
           npm ci
+
+      - name: 🔄 Rebuild
+        if: inputs.rebuild
+        run: |
+          npm run rebuild
 
       - name: ✔ Test with npm
         run: |
