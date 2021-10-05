@@ -59,13 +59,12 @@ jobs:
 
       - name: ✔ Compile with npm
         run: |
-          npm ci
+          npm i
 
   Rebuild:
     name: npm rebuild (Node ${{ matrix.node }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
-    needs: [Compile]
     if: inputs.rebuild
     strategy:
       matrix:
@@ -75,7 +74,7 @@ jobs:
       - name: 📤 Checkout Repository
         uses: actions/checkout@v2.3.4
 
-      - name: 📚 Install npm (with cache)
+      - name: 📚 Install npm without cache
         uses: actions/setup-node@v2.4.1
         with:
           node-version: ${{ matrix.node }}
@@ -83,7 +82,7 @@ jobs:
 
       - name: ✔ Compile with npm
         run: |
-          npm ci
+          npm i
 
       - name: 🔄 Rebuild
         run: |
@@ -117,7 +116,7 @@ jobs:
 
       - name: ✔ Compile with npm
         run:
-          npm ci
+          npm i
 
       - name: ✔ Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
@@ -157,7 +156,7 @@ jobs:
 
       - name: ✔ Compile with npm
         run: |
-          npm ci
+          npm i
           
       - name: 🔄 Rebuild
         if: inputs.rebuild
