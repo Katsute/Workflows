@@ -75,12 +75,11 @@ jobs:
       - name: 📤 Checkout Repository
         uses: actions/checkout@v2.3.4
 
-      - name: 📚 Install npm
+      - name: 📚 Install npm (with cache)
         uses: actions/setup-node@v2.4.1
         with:
           node-version: ${{ matrix.node }}
           architecture: x64
-          cache: npm
 
       - name: ✔ Compile with npm
         run: |
@@ -143,14 +142,27 @@ jobs:
 
       - name: 📚 Install npm
         uses: actions/setup-node@v2.4.1
+        if: ${{ !inputs.rebuild }}
         with:
           node-version: ${{ matrix.node }}
           architecture: x64
           cache: npm
+          
+      - name: 📚 Install npm without cache
+        uses: actions/setup-node@v2.4.1
+        if: inputs.rebuild
+        with:
+          node-version: ${{ matrix.node }}
+          architecture: x64
 
       - name: ✔ Compile with npm
         run: |
           npm ci
+          
+      - name: 🔄 Rebuild
+        if: inputs.rebuild
+        run: |
+          npm run rebuild
 
       - name: ✔ Test with npm
         run: |
