@@ -1,6 +1,78 @@
 # Workflows
 
-### 📄 All Workflows
+Branches: \[ [`main`](https://github.com/Katsute/Workflows) , [`dev`](https://github.com/Katsute/Workflows/tree/dev) ]
+
+Centralized workflow partials for [@Katsute](https://github.com/Katsute) and [@KatsuteDev](https://github.com/KatsuteDev) projects.
+
+<https://docs.github.com/en/actions/learn-github-actions/reusing-workflows>
+
+---
+- [Workflows](#workflows-1)
+  - [Java](#java)
+  - [Node](#node)
+- [Workflow Parameters](#workflow-parameters)
+  - [All Workflows](#all-workflows)
+    - [OS](#os)
+    - [Timeout](#timeout)
+  - [Artifact Workflows](#artifact-workflows)
+    - [Artifact](#artifact)
+  - [Commit Workflows](#commit-workflows)
+    - [Git Login](#git-login)
+    - [Files](#files)
+    - [Message](#message)
+  - [Command Workflows](#command-workflows)
+  - [Deployment Workflows](#deployment-workflows)
+    - [Environment](#environment)
+  - [Java Workflows](#java-workflows)
+    - [CI Version](#ci-version)
+    - [Java Version](#java-version)
+    - [Compile](#compile)
+    - [Package](#package)
+    - [CodeQL](#codeql)
+    - [Test](#test)
+    - [Exec](#exec)
+  - [Node Workflows](#node-workflows)
+    - [CI Version](#ci-version-1)
+    - [Node Version](#node-version)
+    - [Rebuild](#rebuild)
+    - [CodeQL](#codeql-1)
+    - [Test](#test-1)
+
+---
+
+## Workflows
+
+### Java
+
+- CI
+  - `java.ci.yml`
+- Maven Deploy
+  - `java.deploy.yml`
+- Javadoc
+  - `java.doc.yml`
+- Maven Exec
+  - `java.exec.artifact.yml`
+  - `java.exec.commit.yml`
+  - `java.exec.yml`
+- Maven Package
+  - `java.package.artifact.yml`
+  - `java.package.commit.yml`
+
+### Node
+
+- CI
+  - `npm.ci.yml`
+- Commit
+  - `npm.commit.yml`
+- Deploy
+  - `npm.electron.deploy.yml`
+- Run
+  - `npm.run.artifact.yml`
+  - `npm.run.commit.yml`
+
+## Workflow Parameters
+
+### All Workflows
 
 #### OS
 
@@ -26,7 +98,7 @@ timeout:
     description: Job timeout in minutes
 ```
 
-### 📦 Artifact Workflows
+### Artifact Workflows
 
 Uses arguments from [actions/upload-artifact](https://github.com/actions/upload-artifact).
 
@@ -51,7 +123,7 @@ artifact-path:
     description: Artifact path
 ```
 
-### 📥 Commit Workflows
+### Commit Workflows
 
 #### Git Login
 
@@ -112,7 +184,7 @@ commit-message:
     description: Commit message
 ```
 
-### ⌨ Command Workflows
+### Command Workflows
 
 The shell command to run.
 
@@ -123,7 +195,7 @@ command:
     description: Commands to run
 ```
 
-### 🚀 Deployment Workflows
+### Deployment Workflows
 
 #### Environment
 
@@ -136,7 +208,7 @@ environment:
     description: GitHub environment
 ```
 
-### ☕ Java Workflows
+### Java Workflows
 
 Only supports [Adoptium](https://adoptium.net/archive.html) versions.
 
@@ -152,7 +224,7 @@ java-version:
     description: The Java version to use
 ```
 
-#### Other Version
+#### Java Version
 
 The Java version.
 
@@ -249,7 +321,7 @@ exec-args:
     description: Arguments for `mvn exec`
 ```
 
-### 🌐 Node Workflows
+### Node Workflows
 
 #### CI Version
 
@@ -263,7 +335,7 @@ node-version:
     description: The NodeJS version to use
 ```
 
-#### Other Version
+#### Node Version
 
 The Node version.
 
