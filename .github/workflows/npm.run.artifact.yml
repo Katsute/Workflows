@@ -36,8 +36,8 @@ on:
         required: false
 
 jobs:
-  Commit:
-    name: '`${{ inputs.command }}` (${{ inputs.os }} / Node ${{ inputs.node-version }})'
+  Artifact:
+    name: Run & Artifact (${{ inputs.os }} / Node ${{ inputs.node-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     steps:

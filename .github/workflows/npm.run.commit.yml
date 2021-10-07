@@ -47,7 +47,7 @@ on:
 
 jobs:
   Commit:
-    name: '`${{ inputs.command }}` (${{ inputs.os }} / Node ${{ inputs.node-version }})'
+    name: Run & Commit (${{ inputs.os }} / Node ${{ inputs.node-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     steps:
