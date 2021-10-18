@@ -16,7 +16,7 @@ jobs:
       github.actor != 'dependabot-preview[bot]'
     steps:
       - name: 📤 Checkout Repository
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.3.5
 
       - name: ✔ Handle Event
         uses: Katsute/Sinon-bot@main
