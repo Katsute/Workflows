@@ -13,16 +13,19 @@ on:
         default: 30
         required: false
         description: Job timeout in minutes
+
       node-version:
         type: string
         default: 14
         required: false
         description: The NodeJS version to use
+
       rebuild:
         type: boolean
         default: false
         required: false
         description: Run `npm run rebuild`
+
       codeql:
         type: boolean
         default: true
@@ -32,6 +35,7 @@ on:
         default: 14
         required: false
         description: The NodeJS version to use on CodeQL
+
       test:
         type: boolean
         default: true
@@ -48,18 +52,16 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: actions/checkout@v2.3.5
+        uses: Katsute/Workflows/Actions/checkout@main
 
-      - name: 📚 Install npm
-        uses: actions/setup-node@v2.4.1
+      - name: 📚 Install Node
+        uses: Katsute/Workflows/Actions/node@main
         with:
           node-version: ${{ matrix.node }}
-          architecture: x64
-          cache: npm
+          cache: true
 
-      - name: ✔ Compile with npm
-        run: |
-          npm i
+      - name: ✔ Build
+        uses: Katsute/Workflows/Actions/node/install@main
 
   Rebuild:
     name: npm rebuild (Node ${{ matrix.node }})
@@ -72,21 +74,18 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: actions/checkout@v2.3.5
+        uses: Katsute/Workflows/Actions/checkout@main
 
-      - name: 📚 Install npm without cache
-        uses: actions/setup-node@v2.4.1
+      - name: 📚 Install Node
+        uses: Katsute/Workflows/Actions/node@main
         with:
           node-version: ${{ matrix.node }}
-          architecture: x64
 
-      - name: ✔ Compile with npm
-        run: |
-          npm i
+      - name: ✔ Build
+        uses: Katsute/Workflows/Actions/node/install@main
 
-      - name: 🔄 Rebuild
-        run: |
-          npm run rebuild
+      - name: ⟳ Rebuild
+        uses: Katsute/Workflows/Actions/node/rebuild@main
 
   CodeQL:
     name: CodeQL (Node ${{ inputs.codeql-node-version }})
@@ -94,32 +93,30 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     needs: [Compile, Rebuild]
     if: |
-      always() && inputs.codeql && 
+      always() && inputs.codeql &&
       (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
       (needs.Compile.result == 'success') &&
       (needs.Rebuild.result == 'success' || needs.Rebuild.result == 'skipped')
     steps:
       - name: 📤 Checkout Repository
-        uses: actions/checkout@v2.3.5
+        uses: Katsute/Workflows/Actions/checkout@main
 
       - name: 📚 Install CodeQL
-        uses: github/codeql-action/init@v1
+        uses: Katsute/Workflows/Actions/codeql@main
         with:
           languages: javascript
 
-      - name: 📚 Install npm
-        uses: actions/setup-node@v2.4.1
+      - name: 📚 Install Node
+        uses: Katsute/Workflows/Actions/node@main
         with:
-          node-version: ${{ inputs.codeql-node-version }}
-          architecture: x64
-          cache: npm
+          node-version: ${{ matrix.codeql-node-version }}
+          cache: true
 
-      - name: ✔ Compile with npm
-        run:
-          npm i
+      - name: ✔ Build
+        uses: Katsute/Workflows/Actions/node/install@main
 
-      - name: ✔ Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v1
+      - name: ✔ CodeQL Analysis
+        uses: Katsute/Workflows/Actions/codeql/analyze@main
 
   Test:
     name: npm test (Node ${{ matrix.node-version }})
@@ -137,32 +134,20 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: actions/checkout@v2.3.5
+        uses: Katsute/Workflows/Actions/checkout@main
 
-      - name: 📚 Install npm
-        uses: actions/setup-node@v2.4.1
-        if: ${{ !inputs.rebuild }}
+      - name: 📚 Install Node
+        uses: Katsute/Workflows/Actions/node@main
         with:
           node-version: ${{ matrix.node }}
-          architecture: x64
-          cache: npm
-          
-      - name: 📚 Install npm without cache
-        uses: actions/setup-node@v2.4.1
-        if: inputs.rebuild
-        with:
-          node-version: ${{ matrix.node }}
-          architecture: x64
+          cache: true
 
-      - name: ✔ Compile with npm
-        run: |
-          npm i
-          
-      - name: 🔄 Rebuild
-        if: inputs.rebuild
-        run: |
-          npm run rebuild
+      - name: ✔ Build
+        uses: Katsute/Workflows/Actions/node/install@main
 
-      - name: ✔ Test with npm
-        run: |
-          npm test
+      - name: ⟳ Rebuild
+        if: inputs.rebuild
+        uses: Katsute/Workflows/Actions/node/rebuild@main
+
+      - name: ✔ Test
+        uses: Katsute/Workflows/Actions/node/test@main

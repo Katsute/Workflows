@@ -1,0 +1,7 @@
+name: npm test
+description: npm test
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: npm test

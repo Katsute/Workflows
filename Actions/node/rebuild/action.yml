@@ -1,0 +1,7 @@
+name: npm run rebuild
+description: npm run rebuild
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: npm run rebuild

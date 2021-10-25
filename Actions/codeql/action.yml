@@ -1,0 +1,12 @@
+name: github/codeql-action/init
+description: github/codeql-action/init
+inputs:
+  language:
+    description: Language
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: github/codeql-action/init@v1
+      with:
+        language: ${{ inputs.language }}

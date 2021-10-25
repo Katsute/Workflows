@@ -13,20 +13,24 @@ on:
         default: 60
         required: false
         description: Job timeout in minutes
+
       node-version:
         type: number
         default: 14
         required: false
         description: The NodeJS version to use
+
       rebuild:
         type: boolean
         default: true
         required: false
         description: Run `npm run rebuild`
+
       environment:
         type: string
         required: false
         description: GitHub environment
+
     secrets:
       token:
         required: true
@@ -39,23 +43,20 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - name: 📤 Checkout Repository
-        uses: actions/checkout@v2.3.5
+        uses: Katsute/Workflows/Actions/checkout@main
 
-      - name: 📚 Install npm
-        uses: actions/setup-node@v2.4.1
+      - name: 📚 Install Node
+        uses: Katsute/Workflows/Actions/node@main
         with:
           node-version: ${{ inputs.node-version }}
-          architecture: x64
-          cache: npm
+          cache: true
 
-      - name: ✔ Compile with npm
-        run: |
-          npm ci
+      - name: ✔ Build
+        uses: Katsute/Workflows/Actions/node/install@main
 
-      - name: 🔄 Rebuild with Electron
+      - name: ⟳ Rebuild
         if: inputs.rebuild
-        run: |
-          npm run rebuild
+        uses: Katsute/Workflows/Actions/node/rebuild@main
 
       - name: 📦 Package Executable
         run: |

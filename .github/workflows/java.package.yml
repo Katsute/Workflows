@@ -1,4 +1,4 @@
-name: Java Exec
+name: Java Package
 
 on:
   workflow_call:
@@ -15,28 +15,24 @@ on:
         description: Job timeout in minutes
 
       java-version:
-        type: string
+        type: number
         default: 17
         required: false
         description: The Java version to use
 
-      compile-args:
+      package-args:
         type: string
         required: false
-        description: Arguments for `mvn compile`
-      exec-args:
-        type: string
-        required: false
-        description: Arguments for `mvn exec`
+        description: Arguments for `mvn package`
 
       command-pre:
         type: string
         required: false
-        description: Command to run before exec
+        description: Command to run before package
       command-post:
         type: string
         required: false
-        description: Command to run after exec
+        description: Command to run after package
 
       artifact-name:
         type: string
@@ -69,16 +65,14 @@ on:
         description: Commit message
 
     secrets:
-      exec-args:
-        required: false
       command-pre:
         required: false
       command-post:
         required: false
 
 jobs:
-  Exec:
-    name: Exec (Java ${{ inputs.java-version }})
+  deploy:
+    name: Deploy (Java ${{ inputs.java-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     steps:
@@ -90,22 +84,17 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
 
-      - name: ✔ Compile with Maven
-        uses: Katsute/Workflows/Actions/java/compile@main
-        with:
-          args: ${{ inputs.compile-args }}
-
-      - name: ✔ Pre Exec
+      - name: ✔ Pre Package
         if: inputs.command-pre || secrets.command-pre
         run: |
           ${{ inputs.command-pre || secrets.command-pre }}
 
-      - name: ✔ Exec with Maven
-        uses: Katsute/Workflows/Actions/java/exec@main
+      - name: ✔ Package with Maven
+        uses: Katsute/Workflows/Actions/java/package@main
         with:
-          args: ${{ inputs.exec-args || secrets.exec-args }}
+          args: ${{ inputs.package-args }}
 
-      - name: ✔ Post Exec
+      - name: ✔ Post Package
         if: inputs.command-post || secrets.command-post
         run: |
           ${{ inputs.command-post || secrets.command-post }}

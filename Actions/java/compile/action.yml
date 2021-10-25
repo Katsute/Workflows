@@ -1,0 +1,11 @@
+name: mvn compile
+description: mvn compile
+inputs:
+  args:
+    description: Arguments
+    required: false
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: mvn compile -DskipTests --no-transfer-progress ${{ inputs.args }}

@@ -1,4 +1,4 @@
-name: npm Commit
+name: npm run
 
 on:
   workflow_call:
@@ -13,15 +13,27 @@ on:
         default: 30
         required: false
         description: Job timeout in minutes
+
       node-version:
         type: number
         default: 14
         required: false
         description: The NodeJS version to use
+
       command:
         type: string
         required: false
-        description: Commands to run
+        description: Command to run
+      artifact-name:
+        type: string
+        default: artifact
+        required: false
+        description: Artifact name
+      artifact-path:
+        type: string
+        required: true
+        description: Artifact path
+
       git-name:
         type: string
         required: false
@@ -41,6 +53,7 @@ on:
         default: Commit files
         required: false
         description: Commit message
+
     secrets:
       command:
         required: false
@@ -52,29 +65,31 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     steps:
       - name: 📤 Checkout Repository
-        uses: actions/checkout@v2.3.5
+        uses: Katsute/Workflows/Actions/checkout@main
 
-      - name: 📚 Install npm
-        uses: actions/setup-node@v2.4.1
+      - name: 📚 Install Node
+        uses: Katsute/Workflows/Actions/node@main
         with:
           node-version: ${{ inputs.node-version }}
-          architecture: x64
-          cache: npm
+          cache: true
 
       - name: ✔ Run Command
-        if: inputs.command
         run: |
-          ${{ inputs.command }}
+          ${{ inputs.command || secrets.command }}
 
-      - name: ✔ Run Command (secrets)
-        if: ${{ !inputs.command }}
-        run: |
-          ${{ secrets.command }}
+      - name: 🚀 Upload Artifact
+        if: inputs.artifact-name && inputs.artifact-path
+        uses: Katsute/Workflows/Actions/artifact/upload@main
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-path }}
+          retention: 1
 
       - name: 📥 Commit Changes
-        run: |
-          git config --global user.name "${{ inputs.git-name }}"
-          git config --global user.email "${{ inputs.git-email }}"
-          git add "${{ join(fromJSON(format('[{0}]', inputs.commit-files)), '" "') }}"
-          git diff-index --quiet HEAD || git commit -m "${{ inputs.commit-message }}"
-          git push
+        if: inputs.commit-files
+        uses: Katsute/Workflows/Actions/commit@main
+        with:
+          name: ${{ inputs.git-name }}
+          email: ${{ inputs.git-email }}
+          files: ${{ inputs.commit-files }}
+          message: ${{ inputs.commit-message }}
