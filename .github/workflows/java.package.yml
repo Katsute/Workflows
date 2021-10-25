@@ -85,7 +85,6 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: ✔ Pre Package
-        if: inputs.command-pre || secrets.command-pre
         run: |
           ${{ inputs.command-pre || secrets.command-pre }}
 
@@ -95,7 +94,6 @@ jobs:
           args: ${{ inputs.package-args }}
 
       - name: ✔ Post Package
-        if: inputs.command-post || secrets.command-post
         run: |
           ${{ inputs.command-post || secrets.command-post }}
 

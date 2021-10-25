@@ -177,7 +177,6 @@ jobs:
           cache: true
 
       - name: ✔ Pre Test
-        if: inputs.command-pre || secrets.command-pre
         run: |
           ${{ inputs.command-pre || secrets.command-pre }}
 
@@ -187,6 +186,5 @@ jobs:
           args: ${{ inputs.test-args }}
 
       - name: ✔ Post Test
-        if: inputs.command-post || secrets.command-post
         run: |
           ${{ inputs.command-post || secrets.command-post }}

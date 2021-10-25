@@ -96,7 +96,6 @@ jobs:
           args: ${{ inputs.compile-args }}
 
       - name: ✔ Pre Exec
-        if: inputs.command-pre || secrets.command-pre
         run: |
           ${{ inputs.command-pre || secrets.command-pre }}
 
@@ -106,7 +105,6 @@ jobs:
           args: ${{ inputs.exec-args || secrets.exec-args }}
 
       - name: ✔ Post Exec
-        if: inputs.command-post || secrets.command-post
         run: |
           ${{ inputs.command-post || secrets.command-post }}
 
