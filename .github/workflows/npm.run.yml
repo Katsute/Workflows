@@ -31,7 +31,7 @@ on:
         description: Artifact name
       artifact-path:
         type: string
-        required: true
+        required: false
         description: Artifact path
 
       git-name:
@@ -46,7 +46,7 @@ on:
         description: The email to commit with
       commit-files:
         type: string
-        required: true
+        required: false
         description: The file or list of files to commit
       commit-message:
         type: string
