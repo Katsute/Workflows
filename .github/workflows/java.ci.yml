@@ -136,7 +136,7 @@ jobs:
       - name: 📚 Install CodeQL
         uses: Katsute/Workflows/Actions/codeql@main
         with:
-          languages: java
+          language: java
 
       - name: ☕ Install Java
         uses: Katsute/Workflows/Actions/java@main
