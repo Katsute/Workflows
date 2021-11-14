@@ -9,4 +9,4 @@ runs:
   steps:
     - uses: github/codeql-action/init@v1
       with:
-        language: ${{ inputs.language }}
+        languages: ${{ inputs.language }}
