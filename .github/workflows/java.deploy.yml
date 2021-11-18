@@ -55,7 +55,7 @@ jobs:
       - name: 🚀 Deploy to GitHub Packages
         run: mvn deploy -DskipTests --no-transfer-progress -P github
         env:
-          token: ${{ secrets.token }}
+          GITHUB_TOKEN: ${{ secrets.token }}
 
       - name: 🚀 Deploy to GitHub Releases
         uses: AButler/upload-release-assets@v2.0
