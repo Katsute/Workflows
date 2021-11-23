@@ -10,3 +10,4 @@ runs:
     - uses: github/codeql-action/init@v1
       with:
         languages: ${{ inputs.language }}
+        queries: security-and-quality
