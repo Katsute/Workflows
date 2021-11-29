@@ -1,0 +1,12 @@
+name: actions/download-artifact
+description: actions/download-artifact
+inputs:
+  name:
+    description: Artifact name
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@v2.0.10
+      with:
+        name: ${{ inputs.name }}

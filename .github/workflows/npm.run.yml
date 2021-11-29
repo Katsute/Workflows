@@ -24,6 +24,7 @@ on:
         type: string
         required: false
         description: Command to run
+
       artifact-name:
         type: string
         default: artifact

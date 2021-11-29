@@ -71,8 +71,8 @@ on:
         required: false
 
 jobs:
-  deploy:
-    name: Deploy (Java ${{ inputs.java-version }})
+  package:
+    name: Package (Java ${{ inputs.java-version }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     steps:
