@@ -104,12 +104,12 @@ jobs:
       - name: 📚 Install CodeQL
         uses: Katsute/Workflows/Actions/codeql@main
         with:
-          languages: javascript
+          language: javascript
 
       - name: 📚 Install Node
         uses: Katsute/Workflows/Actions/node@main
         with:
-          node-version: ${{ matrix.codeql-node-version }}
+          node-version: ${{ inputs.codeql-node-version }}
           cache: true
 
       - name: ✔ Build
