@@ -64,7 +64,7 @@ jobs:
           repo-token: ${{ secrets.token }}
 
       - name: 📚 Setup Apache Maven Central
-        uses: actions/setup-java@v2.4.0
+        uses: actions/setup-java@v2.5.0
         with:
           architecture: x64
           distribution: temurin
