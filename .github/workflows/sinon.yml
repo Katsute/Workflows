@@ -18,7 +18,15 @@ jobs:
       - name: 📤 Checkout Repository
         uses: Katsute/Workflows/Actions/checkout@main
 
+      - name: 📤 Checkout Action
+        uses: actions/checkout@v2.4.0
+        with:
+          repository: Katsute/Sinon
+          ref: 2764b2510ea772d75042c72b82ab71b835c2cee0
+          path: ./.github/sinon
+          token: ${{ secrets.token }}
+
       - name: ✔ Handle Event
-        uses: Katsute/Sinon-bot@main
+        uses: ./.github/sinon
         with:
           token: ${{ secrets.token }}
