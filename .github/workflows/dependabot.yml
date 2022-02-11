@@ -9,7 +9,7 @@ jobs:
   approve:
     name: Dependabot Approve
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+    if: github.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: ✔ Approve Pull Request
         uses: hmarr/auto-approve-action@v2.1.0
