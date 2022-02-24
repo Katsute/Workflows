@@ -20,14 +20,31 @@ on:
         required: false
         description: The Java version to use
 
+      compile-pre:
+        type: string
+        required: false
+        description: Command to run before compile
       compile-args:
         type: string
         required: false
         description: Arguments for `mvn compile`
+      compile-post:
+        type: string
+        required: false
+        description: Command to run after compile
+
+      exec-pre:
+        type: string
+        required: false
+        description: Command to run before exec
       exec-args:
         type: string
         required: false
         description: Arguments for `mvn exec`
+      exec-post:
+        type: string
+        required: false
+        description: Command to run after exec
 
       command-pre:
         type: string
@@ -69,8 +86,17 @@ on:
         description: Commit message
 
     secrets:
+      compile-pre:
+        required: false
+      compile-post:
+        required: false
+      exec-pre:
+        required: false
       exec-args:
         required: false
+      exec-post:
+        required: false
+      # @deprecated
       command-pre:
         required: false
       command-post:
@@ -90,14 +116,20 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
 
+      - name: ✔ Pre Compile
+        run: ${{ inputs.compile-pre || secrets.compile-pre }}
+
       - name: ✔ Compile with Maven
         uses: Katsute/Workflows/Actions/java/compile@main
         with:
           args: ${{ inputs.compile-args }}
 
+      - name: ✔ Post Compile
+        run: ${{ inputs.compile-post || secrets.compile-post }}
+
       - name: ✔ Pre Exec
         run: |
-          ${{ inputs.command-pre || secrets.command-pre }}
+          ${{ inputs.exec-pre || secrets.exec-pre || inputs.command-pre || secrets.command-pre }}
 
       - name: ✔ Exec with Maven
         uses: Katsute/Workflows/Actions/java/exec@main
@@ -106,7 +138,7 @@ jobs:
 
       - name: ✔ Post Exec
         run: |
-          ${{ inputs.command-post || secrets.command-post }}
+          ${{ inputs.exec-post || secrets.exec-post || inputs.command-post || secrets.command-post }}
 
       - name: 🚀 Upload Artifact
         if: inputs.artifact-name && inputs.artifact-path

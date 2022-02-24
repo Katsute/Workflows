@@ -20,11 +20,23 @@ on:
         required: false
         description: The Java version to use
 
+      compile-pre:
+        type: string
+        required: false
+        description: Command to run before compile
       compile-args:
         type: string
         required: false
         description: Arguments for `mvn compile`
+      compile-post:
+        type: string
+        required: false
+        description: Command to run after compile
 
+      package-pre:
+        type: string
+        required: false
+        description: Command to run before package
       package:
         type: boolean
         default: false
@@ -34,7 +46,15 @@ on:
         type: string
         required: false
         description: Arguments for `mvn package`
+      package-post:
+        type: string
+        required: false
+        description: Command to run after package
 
+      codeql-pre:
+        type: string
+        required: false
+        description: Command to run before codeql
       codeql:
         type: boolean
         default: true
@@ -45,7 +65,15 @@ on:
         default: 17
         required: false
         description: The Java version to use on CodeQL
+      codeql-post:
+        type: string
+        required: false
+        description: Command to run after codeql
 
+      test-pre:
+        type: string
+        required: false
+        description: Command to run before test
       test:
         type: boolean
         default: true
@@ -55,7 +83,11 @@ on:
         type: string
         required: false
         description: Arguments for `mvn test`
-
+      test-post:
+        type: string
+        required: false
+        description: Command to run after test
+      # @deprecated
       command-pre:
         type: string
         required: false
@@ -66,6 +98,23 @@ on:
         description: Command to run after test
 
     secrets:
+      compile-pre:
+        required: false
+      compile-post:
+        required: false
+      package-pre:
+        required: false
+      package-post:
+        required: false
+      codeql-pre:
+        required: false
+      codeql-post:
+        required: false
+      test-pre:
+        required: false
+      test-post:
+        required: false
+      # @deprecated
       command-pre:
         required: false
       command-post:
@@ -90,10 +139,16 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: true
 
+      - name: ✔ Pre Compile
+        run: ${{ inputs.compile-pre || secrets.compile-pre }}
+
       - name: ✔ Compile with Maven
         uses: Katsute/Workflows/Actions/java/compile@main
         with:
           args: ${{ inputs.compile-args }}
+
+      - name: ✔ Post Compile
+        run: ${{ inputs.compile-post || secrets.compile-post }}
 
   Package:
     name: Package (Java ${{ matrix.java }})
@@ -114,10 +169,16 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: true
 
+      - name: ✔ Pre Package
+        run: ${{ inputs.package-pre || secrets.package-pre }}
+
       - name: ✔ Package with Maven
         uses: Katsute/Workflows/Actions/java/package@main
         with:
           args: ${{ inputs.package-args }}
+
+      - name: ✔ Post Package
+        run: ${{ inputs.package-post || secrets.package-post }}
 
   CodeQL:
     name: CodeQL (Java ${{ inputs.codeql-java-version}})
@@ -144,13 +205,25 @@ jobs:
           java-version: ${{ inputs.codeql-java-version }}
           cache: true
 
+      - name: ✔ Pre Compile
+        run: ${{ inputs.compile-pre || secrets.compile-pre }}
+
       - name: ✔ Compile with Maven
         uses: Katsute/Workflows/Actions/java/compile@main
         with:
           args: ${{ inputs.compile-args }}
 
+      - name: ✔ Post Compile
+        run: ${{ inputs.compile-post || secrets.compile-post }}
+
+      - name: ✔ Pre CodeQL
+        run: ${{ inputs.codeql-pre || secrets.codeql-pre }}
+
       - name: ✔ CodeQL Analysis
         uses: Katsute/Workflows/Actions/codeql/analyze@main
+
+      - name: ✔ Post CodeQL
+        run: ${{ inputs.codeql-post || secrets.codeql-post }}
 
   Test:
     name: Test (Java ${{ matrix.java }})
@@ -178,7 +251,7 @@ jobs:
 
       - name: ✔ Pre Test
         run: |
-          ${{ inputs.command-pre || secrets.command-pre }}
+          ${{ inputs.test-pre || secrets.test-pre || inputs.command-pre || secrets.command-pre }}
 
       - name: ✔ Test with Maven
         uses: Katsute/Workflows/Actions/java/test@main
@@ -187,4 +260,4 @@ jobs:
 
       - name: ✔ Post Test
         run: |
-          ${{ inputs.command-post || secrets.command-post }}
+          ${{ inputs.test-post || secrets.test-post || inputs.command-post || secrets.command-post }}

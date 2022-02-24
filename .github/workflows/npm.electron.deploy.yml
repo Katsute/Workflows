@@ -20,11 +20,37 @@ on:
         required: false
         description: The NodeJS version to use
 
+      compile-pre:
+        type: string
+        required: false
+        description: Command to run before build
+      compile-post:
+        type: string
+        required: false
+        description: Command to run after build
+
+      rebuild-pre:
+        type: string
+        required: false
+        description: Command to run before rebuild
       rebuild:
         type: boolean
         default: true
         required: false
         description: Run `npm run rebuild`
+      rebuild-post:
+        type: string
+        required: false
+        description: Command to run after rebuild
+
+      package-pre:
+        type: string
+        required: false
+        description: Command to run before package
+      package-post:
+        type: string
+        required: false
+        description: Command to run after package
 
       environment:
         type: string
@@ -32,6 +58,19 @@ on:
         description: GitHub environment
 
     secrets:
+      compile-pre:
+        required: false
+      compile-post:
+        required: false
+      rebuild-pre:
+        required: false
+      rebuild-post:
+        required: false
+      package-pre:
+        required: false
+      package-post:
+        required: false
+
       token:
         required: true
 
@@ -51,16 +90,34 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: true
 
+      - name: ✔ Pre Compile
+        run: ${{ inputs.compile-pre || secrets.compile-pre }}
+
       - name: ✔ Build
         uses: Katsute/Workflows/Actions/node/install@main
+
+      - name: ✔ Post Compile
+        run: ${{ inputs.compile-post || secrets.compile-post }}
+
+      - name: ✔ Pre Rebuild
+        run: ${{ inputs.rebuild-pre || secrets.rebuild-pre }}
 
       - name: ⟳ Rebuild
         if: inputs.rebuild
         uses: Katsute/Workflows/Actions/node/rebuild@main
 
+      - name: ✔ Post Rebuild
+        run: ${{ inputs.rebuild-post || secrets.rebuild-post }}
+
+      - name: ✔ Pre Package
+        run: ${{ inputs.package-pre || secrets.package-pre }}
+
       - name: 📦 Package Executable
         run: |
           npm run make
+
+      - name: ✔ Post Package
+        run: ${{ inputs.package-post || secrets.package-post }}
 
       - name: 🚀 Deploy to Releases
         uses: AButler/upload-release-assets@v2.0

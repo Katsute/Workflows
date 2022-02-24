@@ -20,26 +20,79 @@ on:
         required: false
         description: The NodeJS version to use
 
+      compile-pre:
+        type: string
+        required: false
+        description: Command to run before build
+      compile-post:
+        type: string
+        required: false
+        description: Command to run after build
+
+      rebuild-pre:
+        type: string
+        required: false
+        description: Command to run before rebuild
       rebuild:
         type: boolean
         default: false
         required: false
         description: Run `npm run rebuild`
+      rebuild-post:
+        type: string
+        required: false
+        description: Command to run after rebuild
 
+      codeql-pre:
+        type: string
+        required: false
+        description: Command to run before codeql
       codeql:
         type: boolean
         default: true
+        required: false
         description: Run CodeQL analysis
       codeql-node-version:
         type: number
         default: 14
         required: false
         description: The NodeJS version to use on CodeQL
+      codeql-post:
+        type: string
+        required: false
+        description: Command to run after codeql
 
+      test-pre:
+        type: string
+        required: false
+        description: Command to run before test
       test:
         type: boolean
         default: true
+        required: false
         description: Run `npm test`
+      test-post:
+        type: string
+        required: false
+        description: Command to run after test
+
+    secrets:
+      compile-pre:
+        required: false
+      compile-post:
+        required: false
+      rebuild-pre:
+        required: false
+      rebuild-post:
+        required: false
+      codeql-pre:
+        required: false
+      codeql-post:
+        required: false
+      test-pre:
+        required: false
+      test-post:
+        required: false
 
 jobs:
   Compile:
@@ -60,8 +113,14 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: true
 
+      - name: ✔ Pre Compile
+        run: ${{ inputs.compile-pre || secrets.compile-pre }}
+
       - name: ✔ Build
         uses: Katsute/Workflows/Actions/node/install@main
+
+      - name: ✔ Post Compile
+        run: ${{ inputs.compile-post || secrets.compile-post }}
 
   Rebuild:
     name: npm rebuild (Node ${{ matrix.node }})
@@ -81,11 +140,23 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - name: ✔ Pre Compile
+        run: ${{ inputs.compile-pre || secrets.compile-pre }}
+
       - name: ✔ Build
         uses: Katsute/Workflows/Actions/node/install@main
 
+      - name: ✔ Post Compile
+        run: ${{ inputs.compile-post || secrets.compile-post }}
+
+      - name: ✔ Pre Rebuild
+        run: ${{ inputs.rebuild-pre || secrets.rebuild-pre }}
+
       - name: ⟳ Rebuild
         uses: Katsute/Workflows/Actions/node/rebuild@main
+
+      - name: ✔ Post Rebuild
+        run: ${{ inputs.rebuild-post || secrets.rebuild-post }}
 
   CodeQL:
     name: CodeQL (Node ${{ inputs.codeql-node-version }})
@@ -112,11 +183,23 @@ jobs:
           node-version: ${{ inputs.codeql-node-version }}
           cache: true
 
+      - name: ✔ Pre Compile
+        run: ${{ inputs.compile-pre || secrets.compile-pre }}
+
       - name: ✔ Build
         uses: Katsute/Workflows/Actions/node/install@main
 
+      - name: ✔ Post Compile
+        run: ${{ inputs.compile-post || secrets.compile-post }}
+
+      - name: ✔ Pre CodeQL
+        run: ${{ inputs.codeql-pre || secrets.codeql-pre }}
+
       - name: ✔ CodeQL Analysis
         uses: Katsute/Workflows/Actions/codeql/analyze@main
+
+      - name: ✔ Post CodeQL
+        run: ${{ inputs.codeql-post || secrets.codeql-post }}
 
   Test:
     name: npm test (Node ${{ matrix.node-version }})
@@ -142,12 +225,32 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: true
 
+      - name: ✔ Pre Compile
+        run: ${{ inputs.compile-pre || secrets.compile-pre }}
+
       - name: ✔ Build
         uses: Katsute/Workflows/Actions/node/install@main
+
+      - name: ✔ Post Compile
+        run: ${{ inputs.compile-post || secrets.compile-post }}
+
+      - name: ✔ Pre Rebuild
+        run: ${{ inputs.rebuild-pre || secrets.rebuild-pre }}
 
       - name: ⟳ Rebuild
         if: inputs.rebuild
         uses: Katsute/Workflows/Actions/node/rebuild@main
 
+      - name: ✔ Post Rebuild
+        run: ${{ inputs.rebuild-post || secrets.rebuild-post }}
+
+      - name: ✔ Pre Test
+        run: |
+          ${{ inputs.test-pre || secrets.test-pre }}
+
       - name: ✔ Test
         uses: Katsute/Workflows/Actions/node/test@main
+
+      - name: ✔ Post Test
+        run: |
+          ${{ inputs.test-post || secrets.test-post }}
