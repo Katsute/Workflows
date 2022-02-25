@@ -16,7 +16,7 @@ on:
 
       node-version:
         type: string
-        default: 14
+        default: 16
         required: false
         description: The NodeJS version to use
 
@@ -54,7 +54,7 @@ on:
         description: Run CodeQL analysis
       codeql-node-version:
         type: number
-        default: 14
+        default: 16
         required: false
         description: The NodeJS version to use on CodeQL
       codeql-post:
