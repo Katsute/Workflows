@@ -19,7 +19,7 @@ jobs:
         uses: Katsute/Workflows/Actions/checkout@main
 
       - name: 📤 Checkout Action
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
         with:
           repository: Katsute/Sinon
           ref: 7db07850744db125b499e0dc0656c49b4f7807a3
