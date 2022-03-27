@@ -2,10 +2,33 @@ version: 2
 updates:
 - package-ecosystem: github-actions
   directory: /
-  labels: [dependencies]
-  reviewers: [Katsute]
-  schedule:
-    interval: daily
-    time: '07:00'
-    timezone: US/Eastern
-  open-pull-requests-limit: 99
+- package-ecosystem: github-actions
+  directory: /Actions/artifact/download
+- package-ecosystem: github-actions
+  directory: /Actions/artifact/upload
+- package-ecosystem: github-actions
+  directory: /Actions/checkout
+- package-ecosystem: github-actions
+  directory: /Actions/codeql
+- package-ecosystem: github-actions
+  directory: /Actions/codeql/analyze
+- package-ecosystem: github-actions
+  directory: /Actions/commit
+- package-ecosystem: github-actions
+  directory: /Actions/java
+- package-ecosystem: github-actions
+  directory: /Actions/java/compile
+- package-ecosystem: github-actions
+  directory: /Actions/java/exec
+- package-ecosystem: github-actions
+  directory: /Actions/java/package
+- package-ecosystem: github-actions
+  directory: /Actions/java/test
+- package-ecosystem: github-actions
+  directory: /Actions/node
+- package-ecosystem: github-actions
+  directory: /Actions/node/install
+- package-ecosystem: github-actions
+  directory: /Actions/node/rebuild
+- package-ecosystem: github-actions
+  directory: /Actions/node/test
