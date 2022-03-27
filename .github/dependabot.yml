@@ -2,33 +2,138 @@ version: 2
 updates:
 - package-ecosystem: github-actions
   directory: /
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/artifact/download
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/artifact/upload
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/checkout
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/codeql
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/codeql/analyze
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/commit
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/java
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/java/compile
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/java/exec
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/java/package
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/java/test
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/node
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/node/install
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/node/rebuild
+  labels: []
+  reviewers: [Katsute]
+  schedule:
+    interval: daily
+    time: '07:00'
+    timezone: US/Eastern
+  open-pull-requests-limit: 99
 - package-ecosystem: github-actions
   directory: /Actions/node/test
