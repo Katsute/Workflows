@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: Katsute/Sinon
-          ref: dfed7e14454fcc7c72d1b583bc20a3079c787152
+          ref: b9d315873e4a04fd79403e32fcbacc4954bc3ceb
           path: ./.github/sinon
           token: ${{ secrets.token }}
 
