@@ -7,7 +7,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: github/codeql-action/init@v1
+    - uses: github/codeql-action/init@v2
       with:
         languages: ${{ inputs.language }}
         queries: security-and-quality
