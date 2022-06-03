@@ -94,6 +94,7 @@ on:
         description: Generate a test report (requires token)
       path:
         type: string
+        default: .
         required: false
         description: Path to source folder
       # @deprecated
