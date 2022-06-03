@@ -68,7 +68,7 @@ on:
       codeql-post:
         type: string
         required: false
-        description: Command to run after codeql
+        description: Command to run after CodeQL
 
       test-pre:
         type: string
@@ -87,6 +87,11 @@ on:
         type: string
         required: false
         description: Command to run after test
+      report:
+        type: boolean
+        default: false
+        required: false
+        description: Generate a test report (requires token)
       path:
         type: string
         required: false
@@ -261,21 +266,21 @@ jobs:
 
       - name: ✔ Test with Maven
         uses: Katsute/Workflows/Actions/java/test@main
-        if: ${{ secrets.token == '' }}
+        if: ${{ !inputs.report }}
         continue-on-error: false
         with:
           args: ${{ inputs.test-args }}
           
       - name: ✔ Test with Maven
         uses: Katsute/Workflows/Actions/java/test@main
-        if: ${{ secrets.token != '' }}
+        if: inputs.report
         continue-on-error: true
         with:
           args: ${{ inputs.test-args }}
           
       - name: 📤 Checkout Action
         uses: actions/checkout@v3
-        if: ${{ secrets.token != '' }}
+        if: inputs.report
         with:
           repository: Katsute/JUnit-Report
           ref: 6990e1dd88a9c3826b600690b0ada9b544470e8a
@@ -284,7 +289,7 @@ jobs:
 
       - name: ✔ Generate Report
         uses: ./.github/junit-report
-        if: ${{ secrets.token != '' }}
+        if: inputs.report
         with:
           path: ${{ inputs.path }}
 
