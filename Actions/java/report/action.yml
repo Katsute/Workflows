@@ -1,0 +1,23 @@
+name: JUnit Report
+description: Generate JUnit report
+inputs:
+  token:
+    description: Checkout token
+    required: true
+  path:
+    description: Sources path
+    default: .
+    required: false
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: Katsute/JUnit-Report
+        ref: 6990e1dd88a9c3826b600690b0ada9b544470e8a
+        path: ./.github/junit-report
+        token: ${{ inputs.token }}
+
+    - uses: ./.github/junit-report
+      with:
+        path: ${{ inputs.path }}

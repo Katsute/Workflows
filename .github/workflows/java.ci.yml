@@ -265,7 +265,7 @@ jobs:
         run: |
           ${{ inputs.test-pre || secrets.test-pre || inputs.command-pre || secrets.command-pre }}
 
-      - name: ✔ Test with Maven
+      - name: ✔ Test with Maven (skip report)
         uses: Katsute/Workflows/Actions/java/test@main
         if: ${{ !inputs.report }}
         continue-on-error: false
@@ -278,20 +278,12 @@ jobs:
         continue-on-error: true
         with:
           args: ${{ inputs.test-args }}
-          
-      - name: 📤 Checkout Action
-        uses: actions/checkout@v3
-        if: inputs.report
-        with:
-          repository: Katsute/JUnit-Report
-          ref: 6990e1dd88a9c3826b600690b0ada9b544470e8a
-          path: ./.github/junit-report
-          token: ${{ secrets.token }}
 
       - name: ✔ Generate Report
-        uses: ./.github/junit-report
+        uses: Katsute/Workflows/Actions/java/report@main
         if: inputs.report
         with:
+          token: ${{ secrets.token }}
           path: ${{ inputs.path }}
 
       - name: ✔ Post Test
