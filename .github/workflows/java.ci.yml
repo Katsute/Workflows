@@ -87,6 +87,10 @@ on:
         type: string
         required: false
         description: Command to run after test
+      path:
+        type: string
+        required: false
+        description: Path to source folder
       # @deprecated
       command-pre:
         type: string
@@ -98,6 +102,8 @@ on:
         description: Command to run after test
 
     secrets:
+      token:
+        required: false
       compile-pre:
         required: false
       compile-post:
@@ -255,8 +261,32 @@ jobs:
 
       - name: ✔ Test with Maven
         uses: Katsute/Workflows/Actions/java/test@main
+        if: ${{ !secrets.token }}
+        continue-on-error: false
         with:
           args: ${{ inputs.test-args }}
+          
+      - name: ✔ Test with Maven
+        uses: Katsute/Workflows/Actions/java/test@main
+        if: secrets.token
+        continue-on-error: true
+        with:
+          args: ${{ inputs.test-args }}
+          
+      - name: 📤 Checkout Action
+        uses: actions/checkout@v3
+        if: secrets.token
+        with:
+          repository: Katsute/JUnit-Report
+          ref: 6990e1dd88a9c3826b600690b0ada9b544470e8a
+          path: ./.github/junit-report
+          token: ${{ secrets.token }}
+
+      - name: ✔ Generate Report
+        uses: ./.github/junit-report
+        if: secrets.token
+        with:
+          path: ${{ inputs.path }}
 
       - name: ✔ Post Test
         run: |
