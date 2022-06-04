@@ -14,7 +14,7 @@ runs:
     - uses: actions/checkout@v3
       with:
         repository: Katsute/JUnit-Report
-        ref: 6990e1dd88a9c3826b600690b0ada9b544470e8a
+        ref: 5c7b90f5641f550409ffc3463f9bbe399d0d98ac
         path: ./.github/junit-report
         token: ${{ inputs.token }}
 
