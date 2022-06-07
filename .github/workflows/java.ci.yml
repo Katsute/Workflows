@@ -267,21 +267,21 @@ jobs:
 
       - name: ✔ Test with Maven (skip report)
         uses: Katsute/Workflows/Actions/java/test@main
-        if: ${{ !inputs.report }}
+        if: ${{ !inputs.report || github.actor == 'dependabot[bot]' }}
         continue-on-error: false
         with:
           args: ${{ inputs.test-args }}
           
       - name: ✔ Test with Maven
         uses: Katsute/Workflows/Actions/java/test@main
-        if: inputs.report
+        if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         continue-on-error: true
         with:
           args: ${{ inputs.test-args }}
 
       - name: ✔ Generate Report
         uses: Katsute/Workflows/Actions/java/report@main
-        if: inputs.report
+        if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         with:
           token: ${{ secrets.token }}
           path: ${{ inputs.path }}
