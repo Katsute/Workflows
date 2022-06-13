@@ -1,4 +1,4 @@
-name: Sinon[bot]
+name: Repository[bot]
 on:
   workflow_call:
     secrets:
@@ -6,8 +6,8 @@ on:
         required: true
 
 jobs:
-  sinon:
-    name: Sinon[bot]
+  repository-bot:
+    name: Repository[bot]
     runs-on: ubuntu-latest
     if: |
       (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
@@ -21,12 +21,12 @@ jobs:
       - name: 📤 Checkout Action
         uses: actions/checkout@v3
         with:
-          repository: Katsute/Sinon
-          ref: 2100cc4e8ba709d3ed879ccaffa5afa46e920e1d
-          path: ./.github/sinon
+          repository: Katsute/Repository-Bot
+          ref: 394fdc7ca4dc5573ec2f105d55ddc3f4731d7405
+          path: ./.github/repository-bot
           token: ${{ secrets.token }}
 
       - name: ✔ Handle Event
-        uses: ./.github/sinon
+        uses: ./.github/repository-bot
         with:
           token: ${{ secrets.token }}
