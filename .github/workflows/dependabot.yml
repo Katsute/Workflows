@@ -1,10 +1,6 @@
 name: Dependabot[bot]
 
-on:
-  workflow_call:
-    secrets:
-      token:
-        required: true
+on: [workflow_call]
 
 jobs:
   dependabot:
@@ -16,4 +12,4 @@ jobs:
         uses: hmarr/auto-approve-action@v2.2.1
         if: github.actor == 'dependabot[bot]'
         with:
-          github-token: ${{ secrets.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
