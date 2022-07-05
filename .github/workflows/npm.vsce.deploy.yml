@@ -52,6 +52,12 @@ on:
         required: false
         description: Command to run after package
 
+      skip-marketplace:
+        type: boolean
+        default: false
+        required: false
+        description: Skip deploying to Visual Studio Marketplace
+
       file:
         type: string
         required: true
@@ -127,6 +133,7 @@ jobs:
         run: ${{ inputs.package-post || secrets.package-post }}
 
       - name: 🚀 Deploy to Visual Studio Marketplace
+        if: ${{ !skip-marketplace }}
         run: |
           npx vsce publish
         env:
