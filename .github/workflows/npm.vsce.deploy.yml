@@ -71,6 +71,10 @@ on:
         required: false
       rebuild-post:
         required: false
+      package-pre:
+        required: false
+      package-post:
+        required: false
 
       token:
         required: true
