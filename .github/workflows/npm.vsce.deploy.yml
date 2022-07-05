@@ -117,7 +117,7 @@ jobs:
 
       - name: 📦 Package Extension
         run: |
-          npm run package
+          npx vsce package
 
       - name: ✔️ Post Package
         run: ${{ inputs.package-post || secrets.package-post }}
