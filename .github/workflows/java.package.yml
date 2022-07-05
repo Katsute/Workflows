@@ -97,16 +97,16 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
 
-      - name: ✔ Pre Package
+      - name: ✔️ Pre Package
         run: |
           ${{ inputs.package-pre || secrets.package-pre || inputs.command-pre || secrets.command-pre }}
 
-      - name: ✔ Package with Maven
+      - name: ✔️ Package with Maven
         uses: Katsute/Workflows/Actions/java/package@main
         with:
           args: ${{ inputs.package-args }}
 
-      - name: ✔ Post Package
+      - name: ✔️ Post Package
         run: |
           ${{ inputs.package-post || secrets.package-post || inputs.command-post || secrets.command-post }}
 

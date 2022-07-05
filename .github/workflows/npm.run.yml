@@ -74,7 +74,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: true
 
-      - name: ✔ Run Command
+      - name: ✔️ Run Command
         run: |
           ${{ inputs.command || secrets.command }}
 

@@ -26,7 +26,7 @@ jobs:
           path: ./.github/repository-bot
           token: ${{ secrets.token }}
 
-      - name: ✔ Handle Event
+      - name: ✔️ Handle Event
         uses: ./.github/repository-bot
         with:
           token: ${{ secrets.token }}

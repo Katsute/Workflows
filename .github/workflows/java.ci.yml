@@ -151,15 +151,15 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: true
 
-      - name: ✔ Pre Compile
+      - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
-      - name: ✔ Compile with Maven
+      - name: ✔️ Compile with Maven
         uses: Katsute/Workflows/Actions/java/compile@main
         with:
           args: ${{ inputs.compile-args }}
 
-      - name: ✔ Post Compile
+      - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
 
   Package:
@@ -181,15 +181,15 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: true
 
-      - name: ✔ Pre Package
+      - name: ✔️ Pre Package
         run: ${{ inputs.package-pre || secrets.package-pre }}
 
-      - name: ✔ Package with Maven
+      - name: ✔️ Package with Maven
         uses: Katsute/Workflows/Actions/java/package@main
         with:
           args: ${{ inputs.package-args }}
 
-      - name: ✔ Post Package
+      - name: ✔️ Post Package
         run: ${{ inputs.package-post || secrets.package-post }}
 
   CodeQL:
@@ -217,24 +217,24 @@ jobs:
           java-version: ${{ inputs.codeql-java-version }}
           cache: true
 
-      - name: ✔ Pre Compile
+      - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
-      - name: ✔ Compile with Maven
+      - name: ✔️ Compile with Maven
         uses: Katsute/Workflows/Actions/java/compile@main
         with:
           args: ${{ inputs.compile-args }}
 
-      - name: ✔ Post Compile
+      - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
 
-      - name: ✔ Pre CodeQL
+      - name: ✔️ Pre CodeQL
         run: ${{ inputs.codeql-pre || secrets.codeql-pre }}
 
-      - name: ✔ CodeQL Analysis
+      - name: ✔️ CodeQL Analysis
         uses: Katsute/Workflows/Actions/codeql/analyze@main
 
-      - name: ✔ Post CodeQL
+      - name: ✔️ Post CodeQL
         run: ${{ inputs.codeql-post || secrets.codeql-post }}
 
   Test:
@@ -261,31 +261,31 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: true
 
-      - name: ✔ Pre Test
+      - name: ✔️ Pre Test
         run: |
           ${{ inputs.test-pre || secrets.test-pre || inputs.command-pre || secrets.command-pre }}
 
-      - name: ✔ Test with Maven (skip report)
+      - name: ✔️ Test with Maven (skip report)
         uses: Katsute/Workflows/Actions/java/test@main
         if: ${{ !inputs.report || github.actor == 'dependabot[bot]' }}
         continue-on-error: false
         with:
           args: ${{ inputs.test-args }}
-          
-      - name: ✔ Test with Maven
+
+      - name: ✔️ Test with Maven
         uses: Katsute/Workflows/Actions/java/test@main
         if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         continue-on-error: true
         with:
           args: ${{ inputs.test-args }}
 
-      - name: ✔ Generate Report
+      - name: ✔️ Generate Report
         uses: Katsute/Workflows/Actions/java/report@main
         if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         with:
           token: ${{ secrets.token }}
           path: ${{ inputs.path }}
 
-      - name: ✔ Post Test
+      - name: ✔️ Post Test
         run: |
           ${{ inputs.test-post || secrets.test-post || inputs.command-post || secrets.command-post }}

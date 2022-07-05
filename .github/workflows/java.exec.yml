@@ -116,27 +116,27 @@ jobs:
         with:
           java-version: ${{ inputs.java-version }}
 
-      - name: ✔ Pre Compile
+      - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
-      - name: ✔ Compile with Maven
+      - name: ✔️ Compile with Maven
         uses: Katsute/Workflows/Actions/java/compile@main
         with:
           args: ${{ inputs.compile-args }}
 
-      - name: ✔ Post Compile
+      - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
 
-      - name: ✔ Pre Exec
+      - name: ✔️ Pre Exec
         run: |
           ${{ inputs.exec-pre || secrets.exec-pre || inputs.command-pre || secrets.command-pre }}
 
-      - name: ✔ Exec with Maven
+      - name: ✔️ Exec with Maven
         uses: Katsute/Workflows/Actions/java/exec@main
         with:
           args: ${{ inputs.exec-args || secrets.exec-args }}
 
-      - name: ✔ Post Exec
+      - name: ✔️ Post Exec
         run: |
           ${{ inputs.exec-post || secrets.exec-post || inputs.command-post || secrets.command-post }}
 

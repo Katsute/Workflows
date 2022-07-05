@@ -5,7 +5,7 @@ on:
     inputs:
       os:
         type: string
-        default: windows-latest
+        default: ubuntu-latest
         required: false
         description: The operating system
       timeout:
@@ -35,7 +35,7 @@ on:
         description: Command to run before rebuild
       rebuild:
         type: boolean
-        default: true
+        default: false
         required: false
         description: Run `npm run rebuild`
       rebuild-post:
@@ -52,6 +52,11 @@ on:
         required: false
         description: Command to run after package
 
+      file:
+        type: string
+        required: true
+        description: Files to deploy
+
       environment:
         type: string
         required: false
@@ -66,12 +71,10 @@ on:
         required: false
       rebuild-post:
         required: false
-      package-pre:
-        required: false
-      package-post:
-        required: false
 
       token:
+        required: true
+      VSCE:
         required: true
 
 jobs:
@@ -112,15 +115,21 @@ jobs:
       - name: ✔️ Pre Package
         run: ${{ inputs.package-pre || secrets.package-pre }}
 
-      - name: 📦 Package Executable
+      - name: 📦 Package Extension
         run: |
-          npm run make
+          npm run package
 
       - name: ✔️ Post Package
         run: ${{ inputs.package-post || secrets.package-post }}
 
+      - name: 🚀 Deploy to Visual Studio Marketplace
+        run: |
+          npx vsce publish
+        env:
+          VSCE_PAT: ${{ secrets.VSCE }}
+
       - name: 🚀 Deploy to Releases
         uses: AButler/upload-release-assets@v2.0
         with:
-          files: 'out/make/**/*.exe;out/make/**/*.zip'
+          files: ${{ inputs.file }}
           repo-token: ${{ secrets.token }}
