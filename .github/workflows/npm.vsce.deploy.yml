@@ -85,7 +85,7 @@ on:
       token:
         required: true
       VSCE:
-        required: true
+        required: false
 
 jobs:
   Deploy:
