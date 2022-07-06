@@ -133,7 +133,7 @@ jobs:
         run: ${{ inputs.package-post || secrets.package-post }}
 
       - name: 🚀 Deploy to Visual Studio Marketplace
-        if: ${{ !skip-marketplace }}
+        if: ${{ !inputs.skip-marketplace }}
         run: |
           npx vsce publish
         env:
