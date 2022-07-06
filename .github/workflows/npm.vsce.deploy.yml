@@ -126,14 +126,14 @@ jobs:
       - name: ✔️ Post Package
         run: ${{ inputs.package-post || secrets.package-post }}
 
-      - name: 🚀 Deploy to Releases
-        uses: AButler/upload-release-assets@v2.0
-        with:
-          files: ${{ inputs.file }}
-          repo-token: ${{ secrets.token }}
-
       - name: 🚀 Deploy to Visual Studio Marketplace
         run: |
           npx vsce publish
         env:
           VSCE_PAT: ${{ secrets.VSCE }}
+
+      - name: 🚀 Deploy to Releases
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: ${{ inputs.file }}
+          repo-token: ${{ secrets.token }}
