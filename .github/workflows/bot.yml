@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: Katsute/Repository-Bot
-          ref: 68591bade97e07103ba15d2b4e89680fec31285f
+          ref: 169e6957bfa046ec3b81308e4600cbdcd4a41485
           path: ./.github/repository-bot
           token: ${{ secrets.token }}
 
