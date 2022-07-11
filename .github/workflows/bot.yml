@@ -10,9 +10,11 @@ jobs:
     name: Repository[bot]
     runs-on: ubuntu-latest
     if: |
-      (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
-      github.actor != 'mashiro-san' &&
-      !endsWith(github.actor, '[bot]')
+      ${{ 
+        (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
+        github.actor != 'mashiro-san' &&
+        !endsWith(github.actor, '[bot]') 
+      }}
     steps:
       - name: 📤 Checkout Repository
         uses: Katsute/Workflows/Actions/checkout@main
