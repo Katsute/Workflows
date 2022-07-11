@@ -10,10 +10,10 @@ jobs:
     name: Repository[bot]
     runs-on: ubuntu-latest
     if: >-
-      ${{ 
-        (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
-        github.actor != 'mashiro-san' &&
-        !endsWith(github.actor, '[bot]') 
+      ${{
+      (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
+      github.actor != 'mashiro-san' &&
+      !endsWith(github.actor, '[bot]')
       }}
     steps:
       - name: 📤 Checkout Repository
@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: Katsute/Repository-Bot
-          ref: c2d7808e33a671d5313492e5a2e5f7c7b6590a23
+          ref: 68591bade97e07103ba15d2b4e89680fec31285f
           path: ./.github/repository-bot
           token: ${{ secrets.token }}
 
