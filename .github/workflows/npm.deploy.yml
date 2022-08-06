@@ -74,10 +74,10 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/Actions/checkout@main
+        uses: Katsute/Workflows/actions/checkout@main
 
       - name: 📚 Install Node
-        uses: Katsute/Workflows/Actions/node@main
+        uses: Katsute/Workflows/actions/node@main
         with:
           node-version: ${{ inputs.node-version }}
           cache: true
@@ -86,7 +86,7 @@ jobs:
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Build
-        uses: Katsute/Workflows/Actions/node/install@main
+        uses: Katsute/Workflows/actions/node/install@main
 
       - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
@@ -96,7 +96,7 @@ jobs:
 
       - name: ⟳ Rebuild
         if: inputs.rebuild
-        uses: Katsute/Workflows/Actions/node/rebuild@main
+        uses: Katsute/Workflows/actions/node/rebuild@main
 
       - name: ✔️ Post Rebuild
         run: ${{ inputs.rebuild-post || secrets.rebuild-post }}

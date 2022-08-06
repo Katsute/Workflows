@@ -33,15 +33,6 @@ on:
         required: false
         description: Command to run after package
 
-      command-pre:
-        type: string
-        required: false
-        description: Command to run before package
-      command-post:
-        type: string
-        required: false
-        description: Command to run after package
-
       artifact-name:
         type: string
         default: artifact
@@ -77,11 +68,6 @@ on:
         required: false
       package-post:
         required: false
-      # @deprecated
-      command-pre:
-        required: false
-      command-post:
-        required: false
 
 jobs:
   package:
@@ -90,29 +76,29 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/Actions/checkout@main
+        uses: Katsute/Workflows/actions/checkout@main
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/Actions/java@main
+        uses: Katsute/Workflows/actions/java@main
         with:
           java-version: ${{ inputs.java-version }}
 
       - name: ✔️ Pre Package
         run: |
-          ${{ inputs.package-pre || secrets.package-pre || inputs.command-pre || secrets.command-pre }}
+          ${{ inputs.package-pre || secrets.package-pre }}
 
       - name: ✔️ Package with Maven
-        uses: Katsute/Workflows/Actions/java/package@main
+        uses: Katsute/Workflows/actions/java/package@main
         with:
           args: ${{ inputs.package-args }}
 
       - name: ✔️ Post Package
         run: |
-          ${{ inputs.package-post || secrets.package-post || inputs.command-post || secrets.command-post }}
+          ${{ inputs.package-post || secrets.package-post }}
 
       - name: 🚀 Upload Artifact
         if: inputs.artifact-name && inputs.artifact-path
-        uses: Katsute/Workflows/Actions/artifact/upload@main
+        uses: Katsute/Workflows/actions/artifact/upload@main
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
@@ -120,7 +106,7 @@ jobs:
 
       - name: 📥 Commit Changes
         if: inputs.commit-files
-        uses: Katsute/Workflows/Actions/commit@main
+        uses: Katsute/Workflows/actions/commit@main
         with:
           name: ${{ inputs.git-name }}
           email: ${{ inputs.git-email }}

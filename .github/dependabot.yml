@@ -10,7 +10,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/artifact/download
+  directory: /actions/artifact/download
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -19,7 +19,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/artifact/upload
+  directory: /actions/artifact/upload
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -28,7 +28,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/checkout
+  directory: /actions/checkout
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -37,7 +37,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/codeql
+  directory: /actions/codeql
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -46,7 +46,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/codeql/analyze
+  directory: /actions/codeql/analyze
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -55,7 +55,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/commit
+  directory: /actions/commit
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -64,7 +64,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/java
+  directory: /actions/java
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -73,7 +73,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/java/compile
+  directory: /actions/java/compile
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -82,7 +82,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/java/exec
+  directory: /actions/java/exec
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -91,7 +91,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/java/package
+  directory: /actions/java/package
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -100,7 +100,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/java/test
+  directory: /actions/java/test
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -109,7 +109,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/node
+  directory: /actions/node
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -118,7 +118,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/node/install
+  directory: /actions/node/install
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -127,7 +127,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/node/rebuild
+  directory: /actions/node/rebuild
   labels: []
   reviewers: [Katsute]
   schedule:
@@ -136,7 +136,7 @@ updates:
     timezone: US/Eastern
   open-pull-requests-limit: 99
 - package-ecosystem: github-actions
-  directory: /Actions/node/test
+  directory: /actions/node/test
   labels: []
   reviewers: [Katsute]
   schedule:

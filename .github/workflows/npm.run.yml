@@ -66,10 +66,10 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/Actions/checkout@main
+        uses: Katsute/Workflows/actions/checkout@main
 
       - name: 📚 Install Node
-        uses: Katsute/Workflows/Actions/node@main
+        uses: Katsute/Workflows/actions/node@main
         with:
           node-version: ${{ inputs.node-version }}
           cache: true
@@ -80,7 +80,7 @@ jobs:
 
       - name: 🚀 Upload Artifact
         if: inputs.artifact-name && inputs.artifact-path
-        uses: Katsute/Workflows/Actions/artifact/upload@main
+        uses: Katsute/Workflows/actions/artifact/upload@main
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
@@ -88,7 +88,7 @@ jobs:
 
       - name: 📥 Commit Changes
         if: inputs.commit-files
-        uses: Katsute/Workflows/Actions/commit@main
+        uses: Katsute/Workflows/actions/commit@main
         with:
           name: ${{ inputs.git-name }}
           email: ${{ inputs.git-email }}

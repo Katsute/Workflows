@@ -97,15 +97,6 @@ on:
         default: .
         required: false
         description: Path to source folder
-      # @deprecated
-      command-pre:
-        type: string
-        required: false
-        description: Command to run before test
-      command-post:
-        type: string
-        required: false
-        description: Command to run after test
 
     secrets:
       token:
@@ -126,11 +117,6 @@ on:
         required: false
       test-post:
         required: false
-      # @deprecated
-      command-pre:
-        required: false
-      command-post:
-        required: false
 
 jobs:
   Compile:
@@ -143,10 +129,10 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/Actions/checkout@main
+        uses: Katsute/Workflows/actions/checkout@main
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/Actions/java@main
+        uses: Katsute/Workflows/actions/java@main
         with:
           java-version: ${{ matrix.java }}
           cache: true
@@ -155,7 +141,7 @@ jobs:
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Compile with Maven
-        uses: Katsute/Workflows/Actions/java/compile@main
+        uses: Katsute/Workflows/actions/java/compile@main
         with:
           args: ${{ inputs.compile-args }}
 
@@ -173,10 +159,10 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/Actions/checkout@main
+        uses: Katsute/Workflows/actions/checkout@main
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/Actions/java@main
+        uses: Katsute/Workflows/actions/java@main
         with:
           java-version: ${{ matrix.java }}
           cache: true
@@ -185,7 +171,7 @@ jobs:
         run: ${{ inputs.package-pre || secrets.package-pre }}
 
       - name: ✔️ Package with Maven
-        uses: Katsute/Workflows/Actions/java/package@main
+        uses: Katsute/Workflows/actions/java/package@main
         with:
           args: ${{ inputs.package-args }}
 
@@ -204,15 +190,15 @@ jobs:
       (needs.Package.result == 'success' || needs.Package.result == 'skipped')
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/Actions/checkout@main
+        uses: Katsute/Workflows/actions/checkout@main
 
       - name: 📚 Install CodeQL
-        uses: Katsute/Workflows/Actions/codeql@main
+        uses: Katsute/Workflows/actions/codeql@main
         with:
           language: java
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/Actions/java@main
+        uses: Katsute/Workflows/actions/java@main
         with:
           java-version: ${{ inputs.codeql-java-version }}
           cache: true
@@ -221,7 +207,7 @@ jobs:
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Compile with Maven
-        uses: Katsute/Workflows/Actions/java/compile@main
+        uses: Katsute/Workflows/actions/java/compile@main
         with:
           args: ${{ inputs.compile-args }}
 
@@ -232,7 +218,7 @@ jobs:
         run: ${{ inputs.codeql-pre || secrets.codeql-pre }}
 
       - name: ✔️ CodeQL Analysis
-        uses: Katsute/Workflows/Actions/codeql/analyze@main
+        uses: Katsute/Workflows/actions/codeql/analyze@main
 
       - name: ✔️ Post CodeQL
         run: ${{ inputs.codeql-post || secrets.codeql-post }}
@@ -253,34 +239,34 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/Actions/checkout@main
+        uses: Katsute/Workflows/actions/checkout@main
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/Actions/java@main
+        uses: Katsute/Workflows/actions/java@main
         with:
           java-version: ${{ matrix.java }}
           cache: true
 
       - name: ✔️ Pre Test
         run: |
-          ${{ inputs.test-pre || secrets.test-pre || inputs.command-pre || secrets.command-pre }}
+          ${{ inputs.test-pre || secrets.test-pre }}
 
       - name: ✔️ Test with Maven (skip report)
-        uses: Katsute/Workflows/Actions/java/test@main
+        uses: Katsute/Workflows/actions/java/test@main
         if: ${{ !inputs.report || github.actor == 'dependabot[bot]' }}
         continue-on-error: false
         with:
           args: ${{ inputs.test-args }}
 
       - name: ✔️ Test with Maven
-        uses: Katsute/Workflows/Actions/java/test@main
+        uses: Katsute/Workflows/actions/java/test@main
         if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         continue-on-error: true
         with:
           args: ${{ inputs.test-args }}
 
       - name: ✔️ Generate Report
-        uses: Katsute/Workflows/Actions/java/report@main
+        uses: Katsute/Workflows/actions/java/report@main
         if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         with:
           token: ${{ secrets.token }}
@@ -288,4 +274,4 @@ jobs:
 
       - name: ✔️ Post Test
         run: |
-          ${{ inputs.test-post || secrets.test-post || inputs.command-post || secrets.command-post }}
+          ${{ inputs.test-post || secrets.test-post }}

@@ -18,7 +18,7 @@ jobs:
       }}
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/Actions/checkout@main
+        uses: Katsute/Workflows/actions/checkout@main
 
       - name: 📤 Checkout Action
         uses: actions/checkout@v3
