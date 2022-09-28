@@ -4,7 +4,6 @@ updates:
     directory: /
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -14,7 +13,6 @@ updates:
     directory: /actions/artifact/download
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -24,7 +22,6 @@ updates:
     directory: /actions/artifact/upload
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -34,7 +31,6 @@ updates:
     directory: /actions/checkout
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -44,7 +40,6 @@ updates:
     directory: /actions/codeql
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -54,7 +49,6 @@ updates:
     directory: /actions/codeql/analyze
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -64,7 +58,6 @@ updates:
     directory: /actions/commit
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -74,7 +67,6 @@ updates:
     directory: /actions/java
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -84,7 +76,6 @@ updates:
     directory: /actions/java/compile
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -94,7 +85,6 @@ updates:
     directory: /actions/java/exec
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -104,7 +94,6 @@ updates:
     directory: /actions/java/package
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -114,7 +103,6 @@ updates:
     directory: /actions/java/test
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -124,7 +112,6 @@ updates:
     directory: /actions/node
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -134,7 +121,6 @@ updates:
     directory: /actions/node/install
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -144,7 +130,6 @@ updates:
     directory: /actions/node/rebuild
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
@@ -154,7 +139,6 @@ updates:
     directory: /actions/node/test
     labels: []
     assignees: [Katsute]
-    reviewers: [Katsute]
     schedule:
       interval: daily
       time: '07:00'
