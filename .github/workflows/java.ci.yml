@@ -16,7 +16,7 @@ on:
 
       java-version:
         type: string
-        default: 8, 11, 17, 18
+        default: 8, 11, 17, 19
         required: false
         description: The Java version to use
 
