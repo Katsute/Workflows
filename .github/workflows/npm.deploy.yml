@@ -102,7 +102,7 @@ jobs:
         run: ${{ inputs.rebuild-post || secrets.rebuild-post }}
 
       - name: 🚀 Deploy to Releases
-        uses: AButler/upload-release-assets@v2.0
+        uses: AButler/upload-release-assets@v2.0.1
         with:
           files: ${{ inputs.file }}
           repo-token: ${{ secrets.token }}

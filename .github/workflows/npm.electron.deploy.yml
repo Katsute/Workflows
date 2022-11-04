@@ -120,7 +120,7 @@ jobs:
         run: ${{ inputs.package-post || secrets.package-post }}
 
       - name: 🚀 Deploy to Releases
-        uses: AButler/upload-release-assets@v2.0
+        uses: AButler/upload-release-assets@v2.0.1
         with:
           files: 'out/make/**/*.exe;out/make/**/*.zip'
           repo-token: ${{ secrets.token }}
