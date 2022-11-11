@@ -16,7 +16,7 @@ on:
 
       node-version:
         type: string
-        default: 16
+        default: 18
         required: false
         description: The NodeJS version to use
 
