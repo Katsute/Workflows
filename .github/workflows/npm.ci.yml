@@ -54,7 +54,7 @@ on:
         description: Run CodeQL analysis
       codeql-node-version:
         type: number
-        default: 16
+        default: 18
         required: false
         description: The NodeJS version to use on CodeQL
       codeql-post:
