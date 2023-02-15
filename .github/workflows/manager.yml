@@ -1,0 +1,24 @@
+name: Repository Manager
+on:
+  workflow_call:
+    secrets:
+      token:
+        required: true
+
+jobs:
+  manager:
+    name: Repository Manager
+    uses: Katsute/Repository-Manager/.github/workflows/repository-manager.yml@b0e117c23d88c8e577eca20d40eb98f190bec3c0
+    if: >-
+      ${{
+      (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
+      github.repository != 'Katsute/Repository-Manager' &&
+      github.actor != 'mashiro-san' &&
+      !endsWith(github.actor, '[bot]')
+      }}
+    with:
+      login: mashiro-san
+      username: Mashiro
+      email: 107276926+mashiro-san@users.noreply.github.com
+    secrets:
+      token: ${{ secrets.token }}
