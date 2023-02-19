@@ -154,6 +154,7 @@ jobs:
     name: Package (Java ${{ matrix.java }})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
+    needs: Compile
     if: inputs.package
     strategy:
       matrix:
@@ -186,7 +187,7 @@ jobs:
     name: CodeQL (Java ${{ inputs.codeql-java-version}})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
-    needs: [Compile, Package]
+    needs: Package
     if: |
       always() && inputs.codeql &&
       (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
@@ -279,7 +280,7 @@ jobs:
         if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         with:
           repository: Katsute/JUnit-Report
-          ref: 2426c10364e67bb5b103bf7ad9205b3f67702ca3
+          ref: de7738388a346bf154c05cda387c31ae4fed0b00
           path: ./.github/junit-report
           token: ${{ secrets.token }}
 
