@@ -129,21 +129,23 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/actions/java@main
+        uses: actions/setup-java@v3
         with:
+          architecture: x64
+          cache: maven
+          distribution: temurin
           java-version: ${{ matrix.java }}
-          cache: true
 
       - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Compile with Maven
-        uses: Katsute/Workflows/actions/java/compile@main
-        with:
+        env:
           args: ${{ inputs.compile-args }}
+        run: mvn compile -DskipTests --no-transfer-progress $args
 
       - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
@@ -159,21 +161,23 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/actions/java@main
+        uses: actions/setup-java@v3
         with:
+          architecture: x64
+          cache: maven
+          distribution: temurin
           java-version: ${{ matrix.java }}
-          cache: true
 
       - name: ✔️ Pre Package
         run: ${{ inputs.package-pre || secrets.package-pre }}
 
       - name: ✔️ Package with Maven
-        uses: Katsute/Workflows/actions/java/package@main
-        with:
+        env:
           args: ${{ inputs.package-args }}
+        run: mvn package -DskipTests --no-transfer-progress $args
 
       - name: ✔️ Post Package
         run: ${{ inputs.package-post || secrets.package-post }}
@@ -190,26 +194,29 @@ jobs:
       (needs.Package.result == 'success' || needs.Package.result == 'skipped')
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: 📚 Install CodeQL
-        uses: Katsute/Workflows/actions/codeql@main
+        uses: github/codeql-action/init@v2
         with:
           language: java
+          queries: security-and-quality
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/actions/java@main
+        uses: actions/setup-java@v3
         with:
+          architecture: x64
+          cache: maven
+          distribution: temurin
           java-version: ${{ inputs.codeql-java-version }}
-          cache: true
 
       - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Compile with Maven
-        uses: Katsute/Workflows/actions/java/compile@main
-        with:
+        env:
           args: ${{ inputs.compile-args }}
+        run: mvn compile -DskipTests --no-transfer-progress $args
 
       - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
@@ -218,7 +225,7 @@ jobs:
         run: ${{ inputs.codeql-pre || secrets.codeql-pre }}
 
       - name: ✔️ CodeQL Analysis
-        uses: Katsute/Workflows/actions/codeql/analyze@main
+        uses: github/codeql-action/analyze@v2
 
       - name: ✔️ Post CodeQL
         run: ${{ inputs.codeql-post || secrets.codeql-post }}
@@ -239,37 +246,46 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/actions/java@main
+        uses: actions/setup-java@v3
         with:
+          architecture: x64
+          cache: maven
+          distribution: temurin
           java-version: ${{ matrix.java }}
-          cache: true
 
       - name: ✔️ Pre Test
         run: |
           ${{ inputs.test-pre || secrets.test-pre }}
 
       - name: ✔️ Test with Maven (skip report)
-        uses: Katsute/Workflows/actions/java/test@main
         if: ${{ !inputs.report || github.actor == 'dependabot[bot]' }}
         continue-on-error: false
-        with:
+        env:
           args: ${{ inputs.test-args }}
+        run: mvn test -fae --no-transfer-progress $args
 
       - name: ✔️ Test with Maven
-        uses: Katsute/Workflows/actions/java/test@main
         if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         continue-on-error: true
-        with:
+        env:
           args: ${{ inputs.test-args }}
+        run: mvn test -fae --no-transfer-progress $args
 
-      - name: ✔️ Generate Report
-        uses: Katsute/Workflows/actions/java/report@main
+      - name: 📤 Checkout JUnit Report
+        uses: actions/checkout@v3
         if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
         with:
+          repository: Katsute/JUnit-Report
+          ref: 2426c10364e67bb5b103bf7ad9205b3f67702ca3
+          path: ./.github/junit-report
           token: ${{ secrets.token }}
+
+      - name: ✔️ Generate Report
+        uses: ./.github/junit-report
+        with:
           path: ${{ inputs.path }}
 
       - name: ✔️ Post Test

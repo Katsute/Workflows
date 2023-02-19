@@ -105,19 +105,20 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: 📚 Install Node
-        uses: Katsute/Workflows/actions/node@main
+        uses: actions/setup-node@v3
         with:
+          architecture: x64
+          cache: npm
           node-version: ${{ matrix.node }}
-          cache: true
 
       - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Build
-        uses: Katsute/Workflows/actions/node/install@main
+        run: npm i
 
       - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
@@ -133,18 +134,19 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: 📚 Install Node
-        uses: Katsute/Workflows/actions/node@main
+        uses: actions/setup-node@v3
         with:
+          architecture: x64
           node-version: ${{ matrix.node }}
 
       - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Build
-        uses: Katsute/Workflows/actions/node/install@main
+        run: npm i
 
       - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
@@ -153,7 +155,7 @@ jobs:
         run: ${{ inputs.rebuild-pre || secrets.rebuild-pre }}
 
       - name: ⟳ Rebuild
-        uses: Katsute/Workflows/actions/node/rebuild@main
+        run: npm run rebuild
 
       - name: ✔️ Post Rebuild
         run: ${{ inputs.rebuild-post || secrets.rebuild-post }}
@@ -170,24 +172,26 @@ jobs:
       (needs.Rebuild.result == 'success' || needs.Rebuild.result == 'skipped')
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: 📚 Install CodeQL
-        uses: Katsute/Workflows/actions/codeql@main
+        uses: github/codeql-action/init@v2
         with:
           language: javascript
+          queries: security-and-quality
 
       - name: 📚 Install Node
-        uses: Katsute/Workflows/actions/node@main
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ inputs.codeql-node-version }}
-          cache: true
+          architecture: x64
+          cache: npm
+          node-version: ${{ matrix.node }}
 
       - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Build
-        uses: Katsute/Workflows/actions/node/install@main
+        run: npm i
 
       - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
@@ -196,7 +200,7 @@ jobs:
         run: ${{ inputs.codeql-pre || secrets.codeql-pre }}
 
       - name: ✔️ CodeQL Analysis
-        uses: Katsute/Workflows/actions/codeql/analyze@main
+        uses: github/codeql-action/analyze@v2
 
       - name: ✔️ Post CodeQL
         run: ${{ inputs.codeql-post || secrets.codeql-post }}
@@ -217,19 +221,20 @@ jobs:
       fail-fast: false
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: 📚 Install Node
-        uses: Katsute/Workflows/actions/node@main
+        uses: actions/setup-node@v3
         with:
+          architecture: x64
+          cache: npm
           node-version: ${{ matrix.node }}
-          cache: true
 
       - name: ✔️ Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
       - name: ✔️ Build
-        uses: Katsute/Workflows/actions/node/install@main
+        run: npm i
 
       - name: ✔️ Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
@@ -239,7 +244,7 @@ jobs:
 
       - name: ⟳ Rebuild
         if: inputs.rebuild
-        uses: Katsute/Workflows/actions/node/rebuild@main
+        run: npm run rebuild
 
       - name: ✔️ Post Rebuild
         run: ${{ inputs.rebuild-post || secrets.rebuild-post }}
@@ -249,7 +254,7 @@ jobs:
           ${{ inputs.test-pre || secrets.test-pre }}
 
       - name: ✔️ Test
-        uses: Katsute/Workflows/actions/node/test@main
+        run: npm test
 
       - name: ✔️ Post Test
         run: |

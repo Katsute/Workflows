@@ -1,6 +1,0 @@
-name: github/codeql-action/analyze
-description: github/codeql-action/analyze
-runs:
-  using: composite
-  steps:
-    - uses: github/codeql-action/analyze@v2

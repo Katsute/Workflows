@@ -76,11 +76,13 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     steps:
       - name: 📤 Checkout Repository
-        uses: Katsute/Workflows/actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: ☕ Install Java
-        uses: Katsute/Workflows/actions/java@main
+        uses: actions/setup-java@v3
         with:
+          architecture: x64
+          distribution: temurin
           java-version: ${{ inputs.java-version }}
 
       - name: ✔️ Pre Package
@@ -88,9 +90,9 @@ jobs:
           ${{ inputs.package-pre || secrets.package-pre }}
 
       - name: ✔️ Package with Maven
-        uses: Katsute/Workflows/actions/java/package@main
-        with:
+        env:
           args: ${{ inputs.package-args }}
+        run: mvn package -DskipTests --no-transfer-progress $args
 
       - name: ✔️ Post Package
         run: |
@@ -98,17 +100,22 @@ jobs:
 
       - name: 🚀 Upload Artifact
         if: inputs.artifact-name && inputs.artifact-path
-        uses: Katsute/Workflows/actions/artifact/upload@main
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ inputs.artifact-name }}
           path: ${{ inputs.artifact-path }}
-          retention: 1
+          retention-days: 1
 
       - name: 📥 Commit Changes
         if: inputs.commit-files
-        uses: Katsute/Workflows/actions/commit@main
-        with:
+        env:
           name: ${{ inputs.git-name }}
           email: ${{ inputs.git-email }}
-          files: ${{ inputs.commit-files }}
+          files: ${{ join(fromJSON(format('[{0}]', inputs.commit-files)), '" "') }}
           message: ${{ inputs.commit-message }}
+        run: |
+          git config --global user.name "$name"
+          git config --global user.email "$email"
+          git add "$files"
+          git diff-index --quiet HEAD || git commit -m "$message"
+          git push
