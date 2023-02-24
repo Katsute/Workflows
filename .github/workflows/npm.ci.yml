@@ -178,7 +178,7 @@ jobs:
       - name: 📚 Install CodeQL
         uses: github/codeql-action/init@v2
         with:
-          language: javascript
+          languages: javascript
           queries: security-and-quality
 
       - name: 📚 Install Node

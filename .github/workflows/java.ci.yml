@@ -200,7 +200,7 @@ jobs:
       - name: 📚 Install CodeQL
         uses: github/codeql-action/init@v2
         with:
-          language: java
+          languages: java
           queries: security-and-quality
 
       - name: ☕ Install Java
