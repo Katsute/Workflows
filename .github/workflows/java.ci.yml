@@ -277,7 +277,9 @@ jobs:
 
       - name: 📤 Checkout JUnit Report
         uses: actions/checkout@v3
-        if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
+        env:
+          S: ${{ secrets.token }}
+        if: ${{ inputs.report && github.actor != 'dependabot[bot]' && env.S != '' }}
         with:
           repository: Katsute/JUnit-Report
           ref: de7738388a346bf154c05cda387c31ae4fed0b00

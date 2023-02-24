@@ -10,11 +10,14 @@ jobs:
     name: Repository[bot]
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      S: ${{ secrets.token }}
     if: >-
       ${{
       (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
       github.actor != 'mashiro-san' &&
-      !endsWith(github.actor, '[bot]')
+      !endsWith(github.actor, '[bot]') &&
+      S != ''
       }}
     steps:
       - name: 📤 Checkout Repository
