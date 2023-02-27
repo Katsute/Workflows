@@ -261,15 +261,21 @@ jobs:
         run: |
           ${{ inputs.test-pre || secrets.test-pre }}
 
+      - name: 🔑 Check Token
+        run: |
+          if ["${{ secrets.token }}" != '']; then
+            echo "AUTH=true" >> $GITHUB_ENV;
+          fi
+
       - name: ✔️ Test with Maven (skip report)
-        if: ${{ !inputs.report || github.actor == 'dependabot[bot]' }}
+        if: ${{ !inputs.report || !env.AUTH }}
         continue-on-error: false
         env:
           args: ${{ inputs.test-args }}
         run: mvn test -fae --no-transfer-progress $args
 
       - name: ✔️ Test with Maven
-        if: ${{ inputs.report && github.actor != 'dependabot[bot]' }}
+        if: ${{ inputs.report && env.AUTH }}
         continue-on-error: true
         env:
           args: ${{ inputs.test-args }}
@@ -277,9 +283,7 @@ jobs:
 
       - name: 📤 Checkout JUnit Report
         uses: actions/checkout@v3
-        env:
-          S: ${{ secrets.token }}
-        if: ${{ inputs.report && github.actor != 'dependabot[bot]' && env.S != '' }}
+        if: ${{ inputs.report && env.AUTH }}
         with:
           repository: Katsute/JUnit-Report
           ref: de7738388a346bf154c05cda387c31ae4fed0b00
@@ -287,6 +291,7 @@ jobs:
           token: ${{ secrets.token }}
 
       - name: ✔️ Generate Report
+        if: ${{ inputs.report && env.AUTH }}
         uses: ./.github/junit-report
         with:
           path: ${{ inputs.path }}
