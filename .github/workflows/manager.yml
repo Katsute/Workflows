@@ -21,4 +21,4 @@ jobs:
       username: Mashiro
       email: 107276926+mashiro-san@users.noreply.github.com
     secrets:
-      token: ${{ secrets.token }}
+      token: ${{ secrets.token || secrets.GITHUB_TOKEN }}
