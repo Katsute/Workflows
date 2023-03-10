@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: ✔️️ Approve Pull Request
-        uses: hmarr/auto-approve-action@v3.1.0
+        uses: hmarr/auto-approve-action@v3.2.0
         if: github.event.pull_request.user.login == 'dependabot[bot]'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
