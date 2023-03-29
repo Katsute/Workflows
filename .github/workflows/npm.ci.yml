@@ -170,7 +170,8 @@ jobs:
       always() && inputs.codeql &&
       (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
       (needs.Compile.result == 'success') &&
-      (needs.Rebuild.result == 'success' || needs.Rebuild.result == 'skipped')
+      (needs.Rebuild.result == 'success' || needs.Rebuild.result == 'skipped') &&
+      github.repository.private == false
     steps:
       - name: 📤 Checkout Repository
         uses: actions/checkout@v3
