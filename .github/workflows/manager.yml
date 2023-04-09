@@ -8,11 +8,11 @@ on:
 jobs:
   manager:
     name: Repository Manager
-    uses: Katsute/Repository-Manager/.github/workflows/repository-manager.yml@df1c3d81323752d0428ed1d2871cd5d4af9e7c44
+    uses: Katsute/Manager/.github/workflows/manager.yml@e734188ba7a118fb30bfdfba602752214c3708b2
     if: >-
       ${{
       (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
-      github.repository != 'Katsute/Repository-Manager' &&
+      github.repository != 'Katsute/Manager' &&
       github.actor != 'mashiro-san' &&
       !endsWith(github.actor, '[bot]')
       }}
