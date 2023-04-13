@@ -7,23 +7,19 @@ on:
         type: string
         default: ubuntu-latest
         required: false
-        description: The operating system
       timeout:
         type: number
         default: 60
         required: false
-        description: Job timeout in minutes
 
       environment:
         type: string
         required: false
-        description: GitHub environment
 
       java-version:
         type: number
         default: 17
         required: false
-        description: The Java version to use
 
     secrets:
       token:

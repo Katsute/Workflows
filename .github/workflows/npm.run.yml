@@ -7,53 +7,43 @@ on:
         type: string
         default: ubuntu-latest
         required: false
-        description: The operating system
       timeout:
         type: number
         default: 30
         required: false
-        description: Job timeout in minutes
 
       node-version:
         type: number
         default: 18
         required: false
-        description: The NodeJS version to use
 
       command:
         type: string
         required: false
-        description: Command to run
 
       artifact-name:
         type: string
         default: artifact
         required: false
-        description: Artifact name
       artifact-path:
         type: string
         required: false
-        description: Artifact path
 
       git-name:
         type: string
         required: false
         default: github-actions[bot]
-        description: The username to commit with
       git-email:
         type: string
         required: false
         default: github-actions[bot]@users.noreply.github.com
-        description: The email to commit with
       commit-files:
         type: string
         required: false
-        description: The file or list of files to commit
       commit-message:
         type: string
         default: Commit files
         required: false
-        description: Commit message
 
     secrets:
       command:

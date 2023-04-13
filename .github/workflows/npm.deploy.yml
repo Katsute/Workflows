@@ -7,51 +7,41 @@ on:
         type: string
         default: ubuntu-latest
         required: false
-        description: The operating system
       timeout:
         type: number
         default: 60
         required: false
-        description: Job timeout in minutes
 
       node-version:
         type: number
         default: 18
         required: false
-        description: The NodeJS version to use
 
       compile-pre:
         type: string
         required: false
-        description: Command to run before build
       compile-post:
         type: string
         required: false
-        description: Command to run after build
 
       rebuild-pre:
         type: string
         required: false
-        description: Command to run before rebuild
       rebuild:
         type: boolean
         default: false
         required: false
-        description: Run `npm run rebuild`
       rebuild-post:
         type: string
         required: false
-        description: Command to run after rebuild
 
       file:
         type: string
         required: true
-        description: Files to deploy
 
       environment:
         type: string
         required: false
-        description: GitHub environment
 
     secrets:
       compile-pre:

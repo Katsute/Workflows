@@ -7,96 +7,87 @@ on:
         type: string
         default: ubuntu-latest
         required: false
-        description: The operating system
       timeout:
         type: number
         default: 30
         required: false
-        description: Job timeout in minutes
 
       java-version:
         type: string
         default: 8, 11, 17, 20
         required: false
-        description: The Java version to use
 
       compile-pre:
         type: string
         required: false
-        description: Command to run before compile
       compile-args:
         type: string
         required: false
-        description: Arguments for `mvn compile`
       compile-post:
         type: string
         required: false
-        description: Command to run after compile
 
       package-pre:
         type: string
         required: false
-        description: Command to run before package
       package:
         type: boolean
         default: false
         required: false
-        description: Run `mvn package`
       package-args:
         type: string
         required: false
-        description: Arguments for `mvn package`
       package-post:
         type: string
         required: false
-        description: Command to run after package
+
+      dependency-review-pre:
+        type: string
+        required: false
+      dependency-review:
+        type: boolean
+        default: true
+        required: false
+      dependency-review-post:
+        type: string
+        required: false
 
       codeql-pre:
         type: string
         required: false
-        description: Command to run before codeql
       codeql:
         type: boolean
         default: true
         required: false
-        description: Run CodeQL analysis
       codeql-java-version:
         type: number
         default: 17
         required: false
-        description: The Java version to use on CodeQL
       codeql-post:
         type: string
         required: false
-        description: Command to run after CodeQL
 
       test-pre:
         type: string
         required: false
-        description: Command to run before test
       test:
         type: boolean
         default: true
         required: false
-        description: Run `mvn test`
       test-args:
         type: string
         required: false
-        description: Arguments for `mvn test`
       test-post:
         type: string
         required: false
-        description: Command to run after test
       report:
         type: boolean
         default: false
         required: false
-        description: Generate a test report (requires token)
       path:
         type: string
         default: .
         required: false
-        description: Path to source folder
 
     secrets:
       token:
@@ -108,6 +99,10 @@ on:
       package-pre:
         required: false
       package-post:
+        required: false
+      dependency-review-pre:
+        required: false
+      dependency-review-post:
         required: false
       codeql-pre:
         required: false
@@ -183,16 +178,40 @@ jobs:
       - name: ✔️ Post Package
         run: ${{ inputs.package-post || secrets.package-post }}
 
+  Dependency-Review:
+    name: Dependency Review
+    runs-on: ${{ inputs.os }}
+    timeout-minutes: ${{ inputs.timeout }}
+    needs: Package
+    if: |
+      always() && inputs.dependency-review &&
+      (needs.Compile.result == 'success') &&
+      (needs.Package.result == 'success' || needs.Package.result == 'skipped') &&
+      github.event.repository.private == false
+    steps:
+      - name: 📤 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: ✔️ Pre Dependency Review
+        run: ${{ inputs.dependency-review-pre || secrets.dependency-review-pre }}
+
+      - name: ✔️ Dependency Review
+        uses: actions/dependency-review-action@v3
+
+      - name: ✔️ Post Dependency Review
+        run: ${{ inputs.dependency-review-post || secrets.dependency-review-post }}
+
   CodeQL:
     name: CodeQL (Java ${{ inputs.codeql-java-version}})
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
-    needs: Package
+    needs: Dependency-Review
     if: |
       always() && inputs.codeql &&
       (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
       (needs.Compile.result == 'success') &&
       (needs.Package.result == 'success' || needs.Package.result == 'skipped') &&
+      (needs.Dependency-Review.result == 'success' || needs.Dependency-Review.result == 'skipped') &&
       github.event.repository.private == false
     steps:
       - name: 📤 Checkout Repository
@@ -241,6 +260,7 @@ jobs:
       always() && inputs.test &&
       (needs.Compile.result == 'success') &&
       (needs.Package.result == 'success' || needs.Package.result == 'skipped') &&
+      (needs.Dependency-Review.result == 'success' || needs.Dependency-Review.result == 'skipped') &&
       (needs.CodeQL.result == 'success' || needs.CodeQL.result == 'skipped')
     strategy:
       matrix:

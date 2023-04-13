@@ -7,55 +7,44 @@ on:
         type: string
         default: windows-latest
         required: false
-        description: The operating system
       timeout:
         type: number
         default: 60
         required: false
-        description: Job timeout in minutes
 
       node-version:
         type: number
         default: 18
         required: false
-        description: The NodeJS version to use
 
       compile-pre:
         type: string
         required: false
-        description: Command to run before build
       compile-post:
         type: string
         required: false
-        description: Command to run after build
 
       rebuild-pre:
         type: string
         required: false
-        description: Command to run before rebuild
       rebuild:
         type: boolean
         default: true
         required: false
-        description: Run `npm run rebuild`
       rebuild-post:
         type: string
         required: false
-        description: Command to run after rebuild
 
       package-pre:
         type: string
         required: false
-        description: Command to run before package
       package-post:
         type: string
         required: false
-        description: Command to run after package
 
       environment:
         type: string
         required: false
-        description: GitHub environment
 
     secrets:
       compile-pre:
