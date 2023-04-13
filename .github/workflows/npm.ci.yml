@@ -168,6 +168,7 @@ jobs:
     needs: Rebuild
     if: |
       always() && inputs.dependency-review &&
+      github.event_name == 'pull_request' &&
       (needs.Compile.result == 'success') &&
       (needs.Package.result == 'success' || needs.Package.result == 'skipped') &&
       github.event.repository.private == false
