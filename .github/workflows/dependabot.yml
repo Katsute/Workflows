@@ -9,16 +9,14 @@ jobs:
     timeout-minutes: 10
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
+      - name: 📤 Checkout Repository
+        uses: actions/checkout@v3
+
       - name: ✔️️ Approve Pull Request
         run: gh pr review $PR --approve
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
-
-      - name: 📤 Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🔒 Lock PR
         run: gh pr lock $PR
