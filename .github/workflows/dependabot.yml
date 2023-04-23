@@ -13,3 +13,9 @@ jobs:
         if: github.event.pull_request.user.login == 'dependabot[bot]'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🔒 Lock PR
+        run: gh pr lock $PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
