@@ -10,9 +10,10 @@ jobs:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: ✔️️ Approve Pull Request
-        uses: hmarr/auto-approve-action@v3.2.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr review $PR --approve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
 
       - name: 📤 Checkout Repository
         uses: actions/checkout@v3
