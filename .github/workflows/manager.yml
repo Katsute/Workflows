@@ -8,7 +8,7 @@ on:
 jobs:
   manager:
     name: Repository Manager
-    uses: Katsute/Manager/.github/workflows/manager.yml@2ca581bbfb95c981bdc0a1d73267808ad136f5e5
+    uses: Katsute/Manager/.github/workflows/manager.yml@8710fec0a6d68a5211127df55443ac5fbef498bb
     if: >-
       ${{
       (github.repository_owner == 'Katsute' || github.repository_owner == 'KatsuteDev') &&
