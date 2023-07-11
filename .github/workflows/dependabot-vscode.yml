@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          ref: "refs/pull/${{ github.event.number }}/merge"
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Update VSCode
         uses: actions/github-script@v6
