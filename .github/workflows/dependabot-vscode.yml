@@ -1,0 +1,35 @@
+name: Bump VSCode Version
+
+on: [workflow_call]
+
+jobs:
+  vscode:
+    name: Bump VSCode Version
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.number, 'Bump @types/vscode from ')
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Update VSCode
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require("fs");
+
+            const pkg = fs.readFileSync("package.json", "utf-8");
+            const lck = fs.readFileSync("package-lock.json", "utf-8");
+
+            const vscode  = /^ *"@types\/vscode": *"[^.\d\w]?([.\d\w]*)",? *$/gm.exec(pkg)[1];
+            const engines = /(?<=^ *"vscode": *"[^.\d\w]?)([.\d\w]*)(?=",? *$)/gm;
+
+            fs.writeFileSync("package.json", pkg.replace(engines, vscode), "utf-8");
+            fs.writeFileSync("package-lock.json", lck.replace(engines, vscode), "utf-8");
+
+      - name: Commit to PR
+        run: |
+          git add package.json
+          git add package-lock.json
+          git commit -m "Update VSCode"
+          git push origin HEAD
