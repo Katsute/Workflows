@@ -7,7 +7,7 @@ jobs:
     name: Bump VSCode Version
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: github.event.pull_request.user.login == 'dependabot[bot]' && contains('Bump @types/vscode from ', github.event.pull_request.number)
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && contains('Bump @types/vscode from ', github.event.pull_request.title)
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -34,5 +34,5 @@ jobs:
 
           git add package.json
           git add package-lock.json
-          git commit -m "Update VSCode"
+          git diff-index --quiet HEAD || git commit -m "Update VSCode"
           git push origin HEAD
