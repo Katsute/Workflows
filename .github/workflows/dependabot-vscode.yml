@@ -7,7 +7,7 @@ jobs:
     name: Bump VSCode Version
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: github.event.pull_request.user.login == 'dependabot[bot]' && contains('Bump @types/vscode from ', github.event.pull_request.title)
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && contains(github.event.pull_request.title, 'Bump @types/vscode from ')
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
