@@ -63,30 +63,30 @@ jobs:
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: ☕ Install Java
+      - name: Install Java
         uses: actions/setup-java@v3
         with:
           architecture: x64
           distribution: temurin
           java-version: ${{ inputs.java-version }}
 
-      - name: ✔️ Pre Package
+      - name: Pre Package
         run: |
           ${{ inputs.package-pre || secrets.package-pre }}
 
-      - name: ✔️ Package with Maven
+      - name: Package with Maven
         env:
           args: ${{ inputs.package-args }}
         run: mvn package -DskipTests --no-transfer-progress $args
 
-      - name: ✔️ Post Package
+      - name: Post Package
         run: |
           ${{ inputs.package-post || secrets.package-post }}
 
-      - name: 🚀 Upload Artifact
+      - name: Upload Artifact
         if: inputs.artifact-name && inputs.artifact-path
         uses: actions/upload-artifact@v3
         with:
@@ -94,7 +94,7 @@ jobs:
           path: ${{ inputs.artifact-path }}
           retention-days: 1
 
-      - name: 📥 Commit Changes
+      - name: Commit Changes
         if: inputs.commit-files
         env:
           name: ${{ inputs.git-name }}

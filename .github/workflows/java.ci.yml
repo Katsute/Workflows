@@ -123,10 +123,10 @@ jobs:
         java: ${{ fromJSON(format('[{0}]', inputs.java-version)) }}
       fail-fast: false
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: ☕ Install Java
+      - name: Install Java
         uses: actions/setup-java@v3
         with:
           architecture: x64
@@ -134,15 +134,15 @@ jobs:
           distribution: temurin
           java-version: ${{ matrix.java }}
 
-      - name: ✔️ Pre Compile
+      - name: Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
-      - name: ✔️ Compile with Maven
+      - name: Compile with Maven
         env:
           args: ${{ inputs.compile-args }}
         run: mvn compile -DskipTests --no-transfer-progress $args
 
-      - name: ✔️ Post Compile
+      - name: Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
 
   Package:
@@ -156,10 +156,10 @@ jobs:
         java: ${{ fromJSON(format('[{0}]', inputs.java-version)) }}
       fail-fast: false
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: ☕ Install Java
+      - name: Install Java
         uses: actions/setup-java@v3
         with:
           architecture: x64
@@ -167,15 +167,15 @@ jobs:
           distribution: temurin
           java-version: ${{ matrix.java }}
 
-      - name: ✔️ Pre Package
+      - name: Pre Package
         run: ${{ inputs.package-pre || secrets.package-pre }}
 
-      - name: ✔️ Package with Maven
+      - name: Package with Maven
         env:
           args: ${{ inputs.package-args }}
         run: mvn package -DskipTests --no-transfer-progress $args
 
-      - name: ✔️ Post Package
+      - name: Post Package
         run: ${{ inputs.package-post || secrets.package-post }}
 
   Dependency-Review:
@@ -190,16 +190,16 @@ jobs:
       (needs.Package.result == 'success' || needs.Package.result == 'skipped') &&
       github.event.repository.private == false
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: ✔️ Pre Dependency Review
+      - name: Pre Dependency Review
         run: ${{ inputs.dependency-review-pre || secrets.dependency-review-pre }}
 
-      - name: ✔️ Dependency Review
+      - name: Dependency Review
         uses: actions/dependency-review-action@v3
 
-      - name: ✔️ Post Dependency Review
+      - name: Post Dependency Review
         run: ${{ inputs.dependency-review-post || secrets.dependency-review-post }}
 
   CodeQL:
@@ -215,16 +215,16 @@ jobs:
       (needs.Dependency-Review.result == 'success' || needs.Dependency-Review.result == 'skipped') &&
       github.event.repository.private == false
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: 📚 Install CodeQL
+      - name: Install CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: java
           queries: security-and-quality
 
-      - name: ☕ Install Java
+      - name: Install Java
         uses: actions/setup-java@v3
         with:
           architecture: x64
@@ -232,24 +232,24 @@ jobs:
           distribution: temurin
           java-version: ${{ inputs.codeql-java-version }}
 
-      - name: ✔️ Pre Compile
+      - name: Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
-      - name: ✔️ Compile with Maven
+      - name: Compile with Maven
         env:
           args: ${{ inputs.compile-args }}
         run: mvn compile -DskipTests --no-transfer-progress $args
 
-      - name: ✔️ Post Compile
+      - name: Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
 
-      - name: ✔️ Pre CodeQL
+      - name: Pre CodeQL
         run: ${{ inputs.codeql-pre || secrets.codeql-pre }}
 
-      - name: ✔️ CodeQL Analysis
+      - name: CodeQL Analysis
         uses: github/codeql-action/analyze@v2
 
-      - name: ✔️ Post CodeQL
+      - name: Post CodeQL
         run: ${{ inputs.codeql-post || secrets.codeql-post }}
 
   Test:
@@ -268,10 +268,10 @@ jobs:
         java: ${{ fromJSON(format('[{0}]', inputs.java-version)) }}
       fail-fast: false
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: ☕ Install Java
+      - name: Install Java
         uses: actions/setup-java@v3
         with:
           architecture: x64
@@ -279,32 +279,32 @@ jobs:
           distribution: temurin
           java-version: ${{ matrix.java }}
 
-      - name: ✔️ Pre Test
+      - name: Pre Test
         run: |
           ${{ inputs.test-pre || secrets.test-pre }}
 
-      - name: 🔑 Check Token
+      - name: Check Token
         run: |
           if [ "${{ secrets.token }}" != '' ]
           then
             echo "AUTH=true" >> $GITHUB_ENV;
           fi
 
-      - name: ✔️ Test with Maven (skip report)
+      - name: Test with Maven (skip report)
         if: ${{ !inputs.report || !env.AUTH }}
         continue-on-error: false
         env:
           args: ${{ inputs.test-args }}
         run: mvn test -fae --no-transfer-progress $args
 
-      - name: ✔️ Test with Maven
+      - name: Test with Maven
         if: ${{ inputs.report && env.AUTH }}
         continue-on-error: true
         env:
           args: ${{ inputs.test-args }}
         run: mvn test -fae --no-transfer-progress $args
 
-      - name: 📤 Checkout JUnit Report
+      - name: Checkout JUnit Report
         uses: actions/checkout@v3
         if: ${{ inputs.report && env.AUTH }}
         with:
@@ -313,12 +313,12 @@ jobs:
           path: ./.github/junit-report
           token: ${{ secrets.token }}
 
-      - name: ✔️ Generate Report
+      - name: Generate Report
         if: ${{ inputs.report && env.AUTH }}
         uses: ./.github/junit-report
         with:
           path: ${{ inputs.path }}
 
-      - name: ✔️ Post Test
+      - name: Post Test
         run: |
           ${{ inputs.test-post || secrets.test-post }}

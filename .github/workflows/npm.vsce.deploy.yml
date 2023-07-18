@@ -76,52 +76,52 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     environment: ${{ inputs.environment }}
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: 📚 Install Node
+      - name: Install Node
         uses: actions/setup-node@v3
         with:
           architecture: x64
           cache: npm
           node-version: ${{ inputs.node-version }}
 
-      - name: ✔️ Pre Compile
+      - name: Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
-      - name: ✔️ Build
+      - name: Build
         run: npm i
 
-      - name: ✔️ Post Compile
+      - name: Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
 
-      - name: ✔️ Pre Rebuild
+      - name: Pre Rebuild
         run: ${{ inputs.rebuild-pre || secrets.rebuild-pre }}
 
-      - name: ⟳ Rebuild
+      - name: Rebuild
         if: inputs.rebuild
         run: npm run rebuild
 
-      - name: ✔️ Post Rebuild
+      - name: Post Rebuild
         run: ${{ inputs.rebuild-post || secrets.rebuild-post }}
 
-      - name: ✔️ Pre Package
+      - name: Pre Package
         run: ${{ inputs.package-pre || secrets.package-pre }}
 
-      - name: 📦 Package Extension
+      - name: Package Extension
         run: |
           npx vsce package
 
-      - name: ✔️ Post Package
+      - name: Post Package
         run: ${{ inputs.package-post || secrets.package-post }}
 
-      - name: 🚀 Deploy to Releases
+      - name: Deploy to Releases
         uses: AButler/upload-release-assets@v2.0.2
         with:
           files: ${{ inputs.file }}
           repo-token: ${{ secrets.token }}
 
-      - name: 🚀 Deploy to Visual Studio Marketplace
+      - name: Deploy to Visual Studio Marketplace
         run: |
           npx vsce publish
         env:

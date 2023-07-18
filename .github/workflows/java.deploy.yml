@@ -40,28 +40,28 @@ jobs:
     timeout-minutes: ${{ inputs.timeout }}
     environment: ${{ inputs.environment }}
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: ☕ Install Java
+      - name: Install Java
         uses: actions/setup-java@v3
         with:
           architecture: x64
           distribution: temurin
           java-version: ${{ inputs.java-version }}
 
-      - name: 🚀 Deploy to GitHub Packages
+      - name: Deploy to GitHub Packages
         run: mvn deploy -DskipTests --no-transfer-progress -P github
         env:
           GITHUB_TOKEN: ${{ secrets.token }}
 
-      - name: 🚀 Deploy to GitHub Releases
+      - name: Deploy to GitHub Releases
         uses: AButler/upload-release-assets@v2.0.2
         with:
           files: 'target/*.jar'
           repo-token: ${{ secrets.token }}
 
-      - name: 📚 Setup Apache Maven Central
+      - name: Setup Apache Maven Central
         uses: actions/setup-java@v3
         with:
           architecture: x64
@@ -73,7 +73,7 @@ jobs:
           gpg-private-key: ${{ secrets.gpg-private-key }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: 🚀 Deploy to Maven Central
+      - name: Deploy to Maven Central
         run: mvn deploy -DskipTests --no-transfer-progress -P ossrh
         env:
           MAVEN_USERNAME: ${{ secrets.maven-username }}

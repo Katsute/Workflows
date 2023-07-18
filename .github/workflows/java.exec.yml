@@ -79,41 +79,41 @@ jobs:
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     steps:
-      - name: 📤 Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: ☕ Install Java
+      - name: Install Java
         uses: actions/setup-java@v3
         with:
           architecture: x64
           distribution: temurin
           java-version: ${{ inputs.java-version }}
 
-      - name: ✔️ Pre Compile
+      - name: Pre Compile
         run: ${{ inputs.compile-pre || secrets.compile-pre }}
 
-      - name: ✔️ Compile with Maven
+      - name: Compile with Maven
         env:
           args: ${{ inputs.compile-args }}
         run: mvn compile -DskipTests --no-transfer-progress $args
 
-      - name: ✔️ Post Compile
+      - name: Post Compile
         run: ${{ inputs.compile-post || secrets.compile-post }}
 
-      - name: ✔️ Pre Exec
+      - name: Pre Exec
         run: |
           ${{ inputs.exec-pre || secrets.exec-pre }}
 
-      - name: ✔️ Exec with Maven
+      - name: Exec with Maven
         env:
           args: ${{ inputs.exec-args || secrets.exec-args }}
         run: mvn exec:java -DskipTests --no-transfer-progress $args
 
-      - name: ✔️ Post Exec
+      - name: Post Exec
         run: |
           ${{ inputs.exec-post || secrets.exec-post }}
 
-      - name: 🚀 Upload Artifact
+      - name: Upload Artifact
         if: inputs.artifact-name && inputs.artifact-path
         uses: actions/upload-artifact@v3
         with:
@@ -121,7 +121,7 @@ jobs:
           path: ${{ inputs.artifact-path }}
           retention-days: 1
 
-      - name: 📥 Commit Changes
+      - name: Commit Changes
         if: inputs.commit-files
         env:
           name: ${{ inputs.git-name }}
