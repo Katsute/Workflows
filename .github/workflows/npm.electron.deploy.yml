@@ -76,6 +76,7 @@ jobs:
         # https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md#:~:text=WiX%20Toolset
       - name: Add WiX Toolset to Path
         run: echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" >> $GITHUB_PATH
+        shell: bash
 
       - name: Install Node
         uses: actions/setup-node@v3
