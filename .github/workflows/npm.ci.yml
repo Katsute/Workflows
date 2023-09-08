@@ -105,7 +105,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node
         uses: actions/setup-node@v3
@@ -135,7 +135,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node
         uses: actions/setup-node@v3
@@ -174,7 +174,7 @@ jobs:
       github.event.repository.private == false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Pre Dependency Review
         run: ${{ inputs.dependency-review-pre || secrets.dependency-review-pre }}
@@ -199,7 +199,7 @@ jobs:
       github.event.repository.private == false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install CodeQL
         uses: github/codeql-action/init@v2
@@ -249,7 +249,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node
         uses: actions/setup-node@v3

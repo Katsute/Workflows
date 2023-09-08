@@ -124,7 +124,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Java
         uses: actions/setup-java@v3
@@ -157,7 +157,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Java
         uses: actions/setup-java@v3
@@ -191,7 +191,7 @@ jobs:
       github.event.repository.private == false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Pre Dependency Review
         run: ${{ inputs.dependency-review-pre || secrets.dependency-review-pre }}
@@ -216,7 +216,7 @@ jobs:
       github.event.repository.private == false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install CodeQL
         uses: github/codeql-action/init@v2
@@ -269,7 +269,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Java
         uses: actions/setup-java@v3
@@ -305,7 +305,7 @@ jobs:
         run: mvn test -fae --no-transfer-progress $args
 
       - name: Checkout JUnit Report
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         if: ${{ inputs.report && env.AUTH }}
         with:
           repository: Katsute/JUnit-Report
