@@ -14,7 +14,7 @@ on:
 
       java-version:
         type: string
-        default: 8, 11, 17, 20
+        default: 8, 11, 17, 21
         required: false
 
       compile-pre:
@@ -61,7 +61,7 @@ on:
         required: false
       codeql-java-version:
         type: number
-        default: 17
+        default: 21
         required: false
       codeql-post:
         type: string

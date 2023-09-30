@@ -13,8 +13,8 @@ on:
         required: false
 
       java-version:
-        type: string
-        default: 17
+        type: number
+        default: 21
         required: false
 
       compile-pre:
