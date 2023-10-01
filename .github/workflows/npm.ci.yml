@@ -13,7 +13,7 @@ on:
         required: false
 
       node-version:
-        type: string
+        type: number
         default: 18
         required: false
 
