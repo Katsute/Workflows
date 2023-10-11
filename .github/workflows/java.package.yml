@@ -14,7 +14,7 @@ on:
 
       java-version:
         type: number
-        default: 17
+        default: 21
         required: false
 
       package-pre:
