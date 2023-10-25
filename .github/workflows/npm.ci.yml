@@ -14,7 +14,7 @@ on:
 
       node-version:
         type: number
-        default: 18
+        default: 20
         required: false
 
       compile-pre:
@@ -55,7 +55,7 @@ on:
         required: false
       codeql-node-version:
         type: number
-        default: 18
+        default: 20
         required: false
       codeql-post:
         type: string

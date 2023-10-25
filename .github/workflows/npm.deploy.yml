@@ -14,7 +14,7 @@ on:
 
       node-version:
         type: number
-        default: 18
+        default: 20
         required: false
 
       compile-pre:
