@@ -36,6 +36,7 @@ jobs:
           token: ${{ secrets.token || secrets.GITHUB_TOKEN }}
 
       - name: Issue Lock
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.token || secrets.GITHUB_TOKEN }}
           ISSUE: ${{ github.event.issue && 'issue' || 'pr' }}

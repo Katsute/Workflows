@@ -309,7 +309,7 @@ jobs:
         if: ${{ inputs.report && env.AUTH }}
         with:
           repository: Katsute/JUnit-Report
-          ref: 2c9766e27a25a546f5003322848c6561da143f54
+          ref: 6741bec700b60004fdae07399affa1eaf0f86d82
           path: ./.github/junit-report
           token: ${{ secrets.token }}
 
