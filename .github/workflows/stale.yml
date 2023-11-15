@@ -9,6 +9,7 @@ jobs:
   stale:
     name: Stale
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     steps:
       - uses: actions/stale@v8
         with:
@@ -24,3 +25,19 @@ jobs:
           operations-per-run: 100
           exempt-all-milestones: true
           exempt-all-assignees: true
+  lock:
+    name: Lock Stale Issues
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'issues' || github.event_name == 'pull_request') && contains( github.event.pull_request.labels.*.name, 'stale')
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.token || secrets.GITHUB_TOKEN }}
+
+      - name: Issue Lock
+        env:
+          GITHUB_TOKEN: ${{ secrets.token || secrets.GITHUB_TOKEN }}
+          ISSUE: ${{ github.event.issue && 'issue' || 'pr' }}
+          NUMBER: ${{ github.event.issue && github.event.issue.number || github.event.pull_request.number }}
+        run: gh $ISSUE lock $NUMBER
