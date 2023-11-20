@@ -210,6 +210,7 @@ jobs:
     if: |
       always() && inputs.codeql &&
       (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
+      (github.event_name != 'merge_group') &&
       (needs.Compile.result == 'success') &&
       (needs.Package.result == 'success' || needs.Package.result == 'skipped') &&
       (needs.Dependency-Review.result == 'success' || needs.Dependency-Review.result == 'skipped') &&
