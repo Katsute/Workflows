@@ -16,10 +16,10 @@ jobs:
           repo-token: ${{ secrets.token || secrets.GITHUB_TOKEN }}
           days-before-stale: 28
           days-before-close: 14
-          stale-issue-message: This issue has been marked as stale due to inactivity. <br><br> <sub>This is an automated message, do not reply to this comment.</sub>
-          stale-pr-message: This pull request has been marked as stale due to inactivity. <br><br> <sub>This is an automated message, do not reply to this comment.</sub>
-          close-issue-message: This issue has been closed due to inactivity. <br><br> <sub>This is an automated message, do not reply to this comment.</sub>
-          close-pr-message: This pull request has been closed due to inactivity. <br><br> <sub>This is an automated message, do not reply to this comment.</sub>
+          stale-issue-message: This issue has been marked as stale because there has been no activity in the last 30 days. This issue will be closed in 14 days if there is no new activity. <br><br> <sub>This is an automated message, do not reply to this comment.</sub>
+          stale-pr-message: This pull request has been marked as stale because there has been no activity in the last 30 days. This pull request will be closed in 14 days if there is no new activity. <br><br> <sub>This is an automated message, do not reply to this comment.</sub>
+          close-issue-message: This issue has been closed because there has been no activity in the last 45 days. Open a new issue if not resolved. <br><br> <sub>This is an automated message, do not reply to this comment.</sub>
+          close-pr-message: This pull request has been closed because there has been no activity in the last 45 days. Open a new pull request if not resolved. <br><br> <sub>This is an automated message, do not reply to this comment.</sub>
           stale-issue-label: stale
           stale-pr-label: stale
           operations-per-run: 100
