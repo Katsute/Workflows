@@ -127,7 +127,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           architecture: x64
           cache: maven
@@ -160,7 +160,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           architecture: x64
           cache: maven
@@ -225,7 +225,7 @@ jobs:
           queries: security-and-quality
 
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           architecture: x64
           cache: maven
@@ -273,7 +273,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           architecture: x64
           cache: maven
