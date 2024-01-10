@@ -56,7 +56,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.token }}
 
       - name: Deploy to GitHub Releases
-        uses: AButler/upload-release-assets@v2.0.2
+        uses: AButler/upload-release-assets@v3.0
         with:
           files: 'target/*.jar'
           repo-token: ${{ secrets.token }}

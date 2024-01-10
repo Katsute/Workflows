@@ -116,7 +116,7 @@ jobs:
         run: ${{ inputs.package-post || secrets.package-post }}
 
       - name: Deploy to Releases
-        uses: AButler/upload-release-assets@v2.0.2
+        uses: AButler/upload-release-assets@v3.0
         with:
           files: ${{ inputs.file }}
           repo-token: ${{ secrets.token }}
