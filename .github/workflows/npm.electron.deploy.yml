@@ -108,7 +108,7 @@ jobs:
         run: ${{ inputs.package-pre || secrets.package-pre }}
 
       - name: Package Executable
-        run: |
+        run: |-
           npm run make
 
       - name: Post Package

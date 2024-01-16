@@ -166,7 +166,7 @@ jobs:
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: Rebuild
-    if: |
+    if: |-
       always() && inputs.dependency-review &&
       github.event_name == 'pull_request' &&
       (needs.Compile.result == 'success') &&
@@ -190,7 +190,7 @@ jobs:
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: Dependency-Review
-    if: |
+    if: |-
       always() && inputs.codeql &&
       (github.event_name == 'pull_request' || github.actor != 'dependabot[bot]') &&
       (needs.Compile.result == 'success') &&
@@ -238,7 +238,7 @@ jobs:
     runs-on: ${{ inputs.os }}
     timeout-minutes: ${{ inputs.timeout }}
     needs: CodeQL
-    if: |
+    if: |-
       always() && inputs.test &&
       (needs.Compile.result == 'success') &&
       (needs.Rebuild.result == 'success' || needs.Rebuild.result == 'skipped') &&
@@ -279,12 +279,12 @@ jobs:
         run: ${{ inputs.rebuild-post || secrets.rebuild-post }}
 
       - name: Pre Test
-        run: |
+        run: |-
           ${{ inputs.test-pre || secrets.test-pre }}
 
       - name: Test
         run: npm test
 
       - name: Post Test
-        run: |
+        run: |-
           ${{ inputs.test-post || secrets.test-post }}

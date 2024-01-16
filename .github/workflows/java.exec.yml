@@ -101,7 +101,7 @@ jobs:
         run: ${{ inputs.compile-post || secrets.compile-post }}
 
       - name: Pre Exec
-        run: |
+        run: |-
           ${{ inputs.exec-pre || secrets.exec-pre }}
 
       - name: Exec with Maven
@@ -110,7 +110,7 @@ jobs:
         run: mvn exec:java -DskipTests --no-transfer-progress $args
 
       - name: Post Exec
-        run: |
+        run: |-
           ${{ inputs.exec-post || secrets.exec-post }}
 
       - name: Upload Artifact
@@ -129,7 +129,7 @@ jobs:
           email: ${{ inputs.git-email }}
           files: ${{ join(fromJSON(format('[{0}]', inputs.commit-files)), '" "') }}
           message: ${{ inputs.commit-message }}
-        run: |
+        run: |-
           git config --global user.name "$name"
           git config --global user.email "$email"
           git add "$files"

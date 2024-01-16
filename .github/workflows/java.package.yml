@@ -74,7 +74,7 @@ jobs:
           java-version: ${{ inputs.java-version }}
 
       - name: Pre Package
-        run: |
+        run: |-
           ${{ inputs.package-pre || secrets.package-pre }}
 
       - name: Package with Maven
@@ -83,7 +83,7 @@ jobs:
         run: mvn package -DskipTests --no-transfer-progress $args
 
       - name: Post Package
-        run: |
+        run: |-
           ${{ inputs.package-post || secrets.package-post }}
 
       - name: Upload Artifact
@@ -102,7 +102,7 @@ jobs:
           email: ${{ inputs.git-email }}
           files: ${{ join(fromJSON(format('[{0}]', inputs.commit-files)), '" "') }}
           message: ${{ inputs.commit-message }}
-        run: |
+        run: |-
           git config --global user.name "$name"
           git config --global user.email "$email"
           git add "$files"

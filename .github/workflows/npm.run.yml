@@ -66,7 +66,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
 
       - name: Run Command
-        run: |
+        run: |-
           ${{ inputs.command || secrets.command }}
 
       - name: Upload Artifact
@@ -85,7 +85,7 @@ jobs:
           email: ${{ inputs.git-email }}
           files: ${{ join(fromJSON(format('[{0}]', inputs.commit-files)), '" "') }}
           message: ${{ inputs.commit-message }}
-        run: |
+        run: |-
           git config --global user.name "$name"
           git config --global user.email "$email"
           git add "$files"
