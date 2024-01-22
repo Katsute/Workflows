@@ -197,7 +197,7 @@ jobs:
         run: ${{ inputs.dependency-review-pre || secrets.dependency-review-pre }}
 
       - name: Dependency Review
-        uses: actions/dependency-review-action@v3
+        uses: actions/dependency-review-action@v4
 
       - name: Post Dependency Review
         run: ${{ inputs.dependency-review-post || secrets.dependency-review-post }}
